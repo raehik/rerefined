@@ -1,0 +1,61 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.35.2.
+--
+-- see: https://github.com/sol/hpack
+
+name:           rerefined
+version:        0.0.0
+synopsis:       Refinement types
+description:    Please see README.md.
+category:       Types, Data
+homepage:       https://github.com/raehik/rerefined#readme
+bug-reports:    https://github.com/raehik/rerefined/issues
+author:         Ben Orchard
+maintainer:     Ben Orchard <thefirstmuffinman@gmail.com>
+license:        MIT
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/raehik/rerefined
+
+library
+  exposed-modules:
+      Rerefined.Predicate
+      Rerefined.Predicate.Combinator.And
+      Rerefined.Predicate.Combinator.Not
+      Rerefined.Predicate.Combinator.Or
+      Rerefined.Predicate.Combinator.Xor
+      Rerefined.Predicate.Common
+      Rerefined.Predicate.Fail
+      Rerefined.Predicate.LessThan
+      Rerefined.Predicate.Succeed
+      Rerefined.Predicates
+      Rerefined.Refine
+      Rerefined.Refined
+  other-modules:
+      Paths_rerefined
+  hs-source-dirs:
+      src
+  default-extensions:
+      LambdaCase
+      NoStarIsType
+      DerivingVia
+      DeriveAnyClass
+      GADTs
+      RoleAnnotations
+      DefaultSignatures
+      TypeFamilies
+      DataKinds
+      MagicHash
+  ghc-options: -Wall -Wno-unticked-promoted-constructors
+  build-depends:
+      base >=4.16 && <5
+    , text
+    , typeably >=0.1.0 && <0.2
+  default-language: GHC2021
