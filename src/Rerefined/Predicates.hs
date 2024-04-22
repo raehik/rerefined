@@ -5,5 +5,5 @@ module Rerefined.Predicates
   ) where
 
 import Rerefined.Predicate.Fail
-import Rerefined.Predicate.LessThan
+import Rerefined.Predicate.Compare.Natural
 import Rerefined.Predicate.Combinator.And

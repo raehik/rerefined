@@ -15,8 +15,8 @@ refine a =
       Just e  -> Left e
 
 -- TODO needs work. boring & idk how to format nicely
-refineFailurePretty :: (Semigroup a, IsString a) => RefineFailure a -> a
-refineFailurePretty = go (0 :: Int) . (\e -> [e])
+prettyRefineFailure :: (Semigroup a, IsString a) => RefineFailure a -> a
+prettyRefineFailure = go (0 :: Int) . (\e -> [e])
   where
     go n = \case
       []     -> ""

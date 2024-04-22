@@ -6,7 +6,7 @@ module Rerefined.Predicate.Common
   (
   -- * Re-exports
     module Rerefined.Predicate
-  , Typeably(..)
+  , Typeably(..), Typeable
   , proxy#
 
   -- * Predicate validation
@@ -19,6 +19,7 @@ module Rerefined.Predicate.Common
 import Rerefined.Predicate
 import GHC.Exts ( Proxy#, proxy# )
 import Data.Typeable.Typeably
+import Data.Typeable ( Typeable )
 
 -- | Shortcut for returning a predicate validation failure.
 validateFail

@@ -32,8 +32,9 @@ library
       Rerefined.Predicate.Combinator.Or
       Rerefined.Predicate.Combinator.Xor
       Rerefined.Predicate.Common
+      Rerefined.Predicate.Compare
+      Rerefined.Predicate.Compare.Natural
       Rerefined.Predicate.Fail
-      Rerefined.Predicate.LessThan
       Rerefined.Predicate.Succeed
       Rerefined.Predicates
       Rerefined.Refine
