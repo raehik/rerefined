@@ -3,6 +3,7 @@
 module Rerefined.Refine where
 
 import Rerefined.Refined
+import Rerefined.Refined1
 import Rerefined.Predicate
 import GHC.Exts ( proxy#, IsString )
 
@@ -12,6 +13,14 @@ refine
 refine a =
     case validate (proxy# @p) a of
       Nothing -> Right (Refined a)
+      Just e  -> Left e
+
+refine1
+    :: forall p f a. Refine1 p f
+    => f a -> Either (RefineFailure String) (Refined1 p f a)
+refine1 fa =
+    case validate1 (proxy# @p) fa of
+      Nothing -> Right (Refined1 fa)
       Just e  -> Left e
 
 -- TODO needs work. boring & idk how to format nicely

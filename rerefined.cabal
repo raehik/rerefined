@@ -33,12 +33,14 @@ library
       Rerefined.Predicate.Combinator.Xor
       Rerefined.Predicate.Common
       Rerefined.Predicate.Compare
+      Rerefined.Predicate.Compare.Length
       Rerefined.Predicate.Compare.Natural
       Rerefined.Predicate.Fail
       Rerefined.Predicate.Succeed
       Rerefined.Predicates
       Rerefined.Refine
       Rerefined.Refined
+      Rerefined.Refined1
   other-modules:
       Paths_rerefined
   hs-source-dirs:

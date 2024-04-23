@@ -1,21 +1,18 @@
-* add Refined1
-* add missing combinator helpers (`And` reassociating)
-* improve error handling (it's so weird)
-* remove huge dependencies (go away aeson)
-* fix other outstanding issues
+# rerefined to-dos
+* clarify unsafe refines etc.
+* think about reassociation, other weird utils (refined actually provides lots)
+* think about strengthening and weakening. do want but the naming overlaps with
+  my strongweak library... maybe that's just life? not a massive issue
+* check the refined issue list, see if I have any outstanding
+  * on a glance no: added more reassociativity helpers, no aeson, removed
+    insidious Typeable constraints, added `Refined1`, (strongweak), removed
+    `These`
 
----
-
-OK, how to fix original lib:
-
-  * `class Pred (a :: k) where predName' :: Text`
-    * `Text`-ed `TypeRep`. Provide default.
-    * Do manually for logical predicates (which take other predicates) to avoid
-      `Typeable` contexts. Means unideal bracketing (unless we put more thought
-      into it)... but does allow us to omit the implicit kind variables which
-      show up e.g. `And * * l r`.
-  * `throwRefineOtherException` should insert `predName` for us.
-
-Every predicate comes with a simple "before" explanation (its name, static), and
-a more detailed "after" explanation (a specific usage, runtime). This *is
-already there.* It's just messy due to `Typeable`s.
+## Instances
+* vector...? but I think it's handled by `Foldable`
+* MonoTraversable for many `Refined1->Refined` predicates! for that reason, I
+  should avoid even `Refine (CompareLength n) Text`!!
+  * oh wow mono-traversable is fairly small! good god it only has a handful of
+    non-base dependencies. seems good for core library inclusion honestly
+* I think the aeson instances for `Refined` aren't good... I might have a
+  predicate that wants to alter JSON schema but now I have to re-newtype?
