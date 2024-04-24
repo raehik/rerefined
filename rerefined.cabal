@@ -27,17 +27,16 @@ source-repository head
 library
   exposed-modules:
       Rerefined.Predicate
-      Rerefined.Predicate.Combinator.And
-      Rerefined.Predicate.Combinator.Not
-      Rerefined.Predicate.Combinator.Or
-      Rerefined.Predicate.Combinator.Xor
       Rerefined.Predicate.Common
-      Rerefined.Predicate.Compare
-      Rerefined.Predicate.Compare.Length
-      Rerefined.Predicate.Compare.Natural
       Rerefined.Predicate.Fail
+      Rerefined.Predicate.Logical
+      Rerefined.Predicate.Relational
+      Rerefined.Predicate.Relational.Internal
+      Rerefined.Predicate.Relational.Length
+      Rerefined.Predicate.Relational.Value
       Rerefined.Predicate.Succeed
       Rerefined.Predicates
+      Rerefined.Predicates.RefinedShim
       Rerefined.Refine
       Rerefined.Refined
       Rerefined.Refined1
@@ -59,6 +58,6 @@ library
   ghc-options: -Wall -Wno-unticked-promoted-constructors
   build-depends:
       base >=4.16 && <5
-    , text
+    , mono-traversable >=1.0.17.0 && <1.1
     , typeably >=0.1.0 && <0.2
   default-language: GHC2021

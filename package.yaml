@@ -62,7 +62,7 @@ ghc-options:
 dependencies:
 - base >= 4.16 && < 5
 - typeably ^>= 0.1.0
-- text # TODO
+- mono-traversable ^>= 1.0.17.0
 
 library:
   source-dirs: src

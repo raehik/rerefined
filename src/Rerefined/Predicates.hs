@@ -1,14 +1,21 @@
 module Rerefined.Predicates
-  ( Fail
-  , And
-  , LessThan
-  , CompareNatural
+  (
+  -- * Base
+    Succeed
+  , Fail
+
+  -- * Logical
+  , Not
+  , Logical
+
+  -- * Relational
+  , CompareValue
+  , Sign(..)
+  , RelOp(..)
   , CompareLength
-  , Or
   ) where
 
+import Rerefined.Predicate.Succeed
 import Rerefined.Predicate.Fail
-import Rerefined.Predicate.Compare.Natural
-import Rerefined.Predicate.Compare.Length
-import Rerefined.Predicate.Combinator.And
-import Rerefined.Predicate.Combinator.Or
+import Rerefined.Predicate.Logical
+import Rerefined.Predicate.Relational
