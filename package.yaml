@@ -1,6 +1,6 @@
 name: rerefined
 version: 0.0.0
-synopsis: Refinement types
+synopsis: Refinement types, again
 description: Please see README.md.
 extra-source-files:
 - README.md

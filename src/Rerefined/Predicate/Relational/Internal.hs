@@ -1,16 +1,12 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
-
-{- TODO
-
-This is the "correct" approach, rather than the repetitive refined one. But
-errors degrade (though I suppose we could write all the pretty predicate names
-out manually xd). And huh, TypeReps always tick their constructors, even when
-they don't need disambiguating. Makes sense in my head (no ctx), but too bad.
--}
+{-# LANGUAGE UndecidableInstances #-} -- for weird TODO stuff
 
 module Rerefined.Predicate.Relational.Internal where
 
 import Data.Typeable ( Typeable )
+
+import GHC.TypeNats
+import Data.Type.Ord ( Compare, OrdCond )
 
 -- | Relational operator.
 --
@@ -63,3 +59,12 @@ instance ReifyRelOp GTE where
 instance ReifyRelOp GT' where
     reifyRelOp = (>)
     reifyRelOpPretty = ">"
+
+-- | Can we widen the given 'RelOp' from @n@ to @m@?
+type family WidenRelOp (op :: RelOp) (n :: Natural) (m :: Natural) where
+    WidenRelOp LT' n m = OrdCond (Compare n m) True  False False
+    WidenRelOp LTE n m = OrdCond (Compare n m) True  True  False
+    WidenRelOp EQ' n m = OrdCond (Compare n m) False True  False
+    WidenRelOp NEQ n m = OrdCond (Compare n m) True  False True
+    WidenRelOp GT' n m = OrdCond (Compare n m) False False True
+    WidenRelOp GTE n m = OrdCond (Compare n m) False True  True

@@ -9,8 +9,18 @@
   * on a glance no: added more reassociativity helpers, no aeson, removed
     insidious Typeable constraints, added `Refined1`, (strongweak), removed
     `These`
+* make a little `prettyRefined :: Show a => Refined p a -> String` that reifies
+  the predicate nicely and slots the value in!
+  * hrmmmmm idk exactly how it'll look. maybe leave till later.
+
+## Strengthening & weakening
+* the `Weaken` type class should probably be implemented another way
+* start with relational ops
 
 ## Instances
 ### Avoid
 * I think the aeson instances for `Refined` aren't good... I might have a
   predicate that wants to alter JSON schema but now I have to re-newtype?
+
+## Pretty failures
+* TypeReps always tick promoted cstrs, even when they don't need disambiguating.
