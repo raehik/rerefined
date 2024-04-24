@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, AllowAmbiguousTypes #-}
 
 module Rerefined.Refine where
 
@@ -7,6 +7,7 @@ import Rerefined.Refined1
 import Rerefined.Predicate
 import GHC.Exts ( proxy#, IsString )
 
+-- | Refine @a@ with predicate @p@.
 refine
     :: forall p a. Refine p a
     => a -> Either (RefineFailure String) (Refined p a)
@@ -15,6 +16,10 @@ refine a =
       Nothing -> Right (Refined a)
       Just e  -> Left e
 
+-- reifyPredicate is just a weaker version of validate without proxy.
+-- Maybe the latter is useful, though...?
+
+-- | Refine @f a@ with functor predicate @p@.
 refine1
     :: forall p f a. Refine1 p f
     => f a -> Either (RefineFailure String) (Refined1 p f a)
@@ -23,7 +28,7 @@ refine1 fa =
       Nothing -> Right (Refined1 fa)
       Just e  -> Left e
 
--- TODO needs work. boring & idk how to format nicely
+-- TODO needs work. boring & idk how to format nicely. and extra \n at start
 prettyRefineFailure :: (Semigroup a, IsString a) => RefineFailure a -> a
 prettyRefineFailure = go (0 :: Int) . (\e -> [e])
   where

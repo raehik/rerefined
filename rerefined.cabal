@@ -40,6 +40,7 @@ library
       Rerefined.Refine
       Rerefined.Refined
       Rerefined.Refined1
+      Rerefined.TH
   other-modules:
       Paths_rerefined
   hs-source-dirs:
@@ -59,5 +60,6 @@ library
   build-depends:
       base >=4.16 && <5
     , mono-traversable >=1.0.17.0 && <1.1
+    , template-haskell
     , typeably >=0.1.0 && <0.2
   default-language: GHC2021

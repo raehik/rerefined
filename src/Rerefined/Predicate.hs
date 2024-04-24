@@ -35,7 +35,7 @@ class Predicate p => Refine p a where
     -- 'Nothing' indicates success. 'Just' contains a validation failure.
     validate :: Proxy# p -> a -> Maybe (RefineFailure String)
 
--- | Refine functor type @f@ with predicate @p@.
+-- | Refine functor type @f@ with functor predicate @p@.
 --
 -- By not making the contained type accessible, we ensure refinements apply
 -- @forall a. f a@.
