@@ -6,7 +6,7 @@ module Rerefined.Predicate.Relational.Internal where
 import Data.Typeable ( Typeable )
 
 import GHC.TypeNats
-import Data.Type.Ord ( Compare, OrdCond )
+import Data.Type.Ord ( OrdCond )
 
 -- | Relational operator.
 --
@@ -62,9 +62,14 @@ instance ReifyRelOp GT' where
 
 -- | Can we widen the given 'RelOp' from @n@ to @m@?
 type family WidenRelOp (op :: RelOp) (n :: Natural) (m :: Natural) where
-    WidenRelOp LT' n m = OrdCond (Compare n m) True  False False
-    WidenRelOp LTE n m = OrdCond (Compare n m) True  True  False
-    WidenRelOp EQ' n m = OrdCond (Compare n m) False True  False
-    WidenRelOp NEQ n m = OrdCond (Compare n m) True  False True
-    WidenRelOp GT' n m = OrdCond (Compare n m) False False True
-    WidenRelOp GTE n m = OrdCond (Compare n m) False True  True
+    -- @n == m@? no problem
+    WidenRelOp op  n n = True
+
+    -- I'd love to simplify this, but 'CmpNat' is opaque.
+    WidenRelOp LT' n m = OrdCond (CmpNat n m) True  True False
+    WidenRelOp LTE n m = OrdCond (CmpNat n m) True  True False
+    WidenRelOp GTE n m = OrdCond (CmpNat n m) False True True
+    WidenRelOp GT' n m = OrdCond (CmpNat n m) False True True
+
+    -- can't widen (==) or (/=)
+    WidenRelOp _   _ _ = False

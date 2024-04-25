@@ -38,9 +38,10 @@ library
       Rerefined.Predicates
       Rerefined.Predicates.RefinedShim
       Rerefined.Refine
+      Rerefined.Refine.TH
+      Rerefined.Refine.Unsafe
       Rerefined.Refined
       Rerefined.Refined1
-      Rerefined.TH
   other-modules:
       Paths_rerefined
   hs-source-dirs:

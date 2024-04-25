@@ -3,6 +3,8 @@
 module Rerefined.Predicate.Logical where
 
 import Rerefined.Predicate.Common
+import Rerefined.Refined
+import Rerefined.Refine.Unsafe
 
 -- | Logical binary operator.
 --
@@ -122,3 +124,15 @@ instance Refine p a => Refine (Not p) a where
           Nothing -> validateFail p "NOT: predicate succeeded" []
 
 -- TODO principle of explosion? (p and not p -> anything)
+
+-- TODO
+rerefineDeMorgans1
+    :: Refined (Not (Logical Or  l r))       a
+    -> Refined (Logical And (Not l) (Not r)) a
+rerefineDeMorgans1 = unsafeRerefine
+
+-- TODO
+rerefineDeMorgans2
+    :: Refined (Not (Logical And l r))       a
+    -> Refined (Logical Or  (Not l) (Not r)) a
+rerefineDeMorgans2 = unsafeRerefine

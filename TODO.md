@@ -13,6 +13,13 @@
   the predicate nicely and slots the value in!
   * hrmmmmm idk exactly how it'll look. maybe leave till later.
 
+## Terminology
+* read papers
+  * https://arxiv.org/pdf/2010.07763.pdf
+    * arxiv can break idk. https://arxiv.org/abs/2010.07763
+  * https://prl.khoury.northeastern.edu/blog/static/refinement_types_lecture.pdf
+  * https://www.google.com/search?q=refinement+types+paper
+
 ## Strengthening & weakening
 * the `Weaken` type class should probably be implemented another way
 * start with relational ops

@@ -1,4 +1,4 @@
-module Rerefined.TH
+module Rerefined.Refine.TH
   ( refineTH
   , refine1TH
   ) where
