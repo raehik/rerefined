@@ -1,10 +1,10 @@
 -- | Base definitions for refinement predicates.
 
 module Rerefined.Predicate
-  ( Predicate(predicateName)
-  , Refine(validate)
+  ( Refine(validate)
   , Refine1(validate1)
   , RefineFailure(..)
+  , Predicate(predicateName)
   ) where
 
 import GHC.Exts ( Proxy# )
@@ -14,17 +14,18 @@ import Data.Proxy ( Proxy(Proxy) )
 
 -- | Types which define refinements on other types.
 class Predicate p where
-    -- | The predicate name, as a 'Show'-like.
+    -- | The predicate name, as a 'Show'-like (for good bracketing).
     --
-    -- TODO. It should be like 'Show'. You can use 'typeRep' to fill it out for
-    -- non-combinator predicates. Combinator predicates need to write an
-    -- effective 'Show' instance.
+    -- Non-combinator predicates may derive this via 'Typeably'. Combinator
+    -- predicates must write a 'Show'-like instance manually, in order to avoid
+    -- incurring insidious 'Typeable' contexts for the wrapped predicate(s).
+    -- (TODO figure out some generics and/or TH to resolve that)
     predicateName :: Proxy# p -> Int -> ShowS
 
 -- | Fill out predicate metadata using its 'Typeable' instance.
 --
--- Do not use this for combinator predicates. Doing so will incur
--- insidious 'Typeable' contexts for the wrapped predicate(s).
+-- Do not use this for combinator predicates. Doing so will incur insidious
+-- 'Typeable' contexts for the wrapped predicate(s).
 instance Typeable a => Predicate (Typeably a) where
     predicateName _ d = showsPrec d (typeRep (Proxy @a))
 
@@ -38,7 +39,8 @@ class Predicate p => Refine p a where
 -- | Refine functor type @f@ with functor predicate @p@.
 --
 -- By not making the contained type accessible, we ensure refinements apply
--- @forall a. f a@.
+-- @forall a. f a@. That is, refinements here apply only to the functor
+-- structure, and not the stored elements.
 class Predicate p => Refine1 p f where
     -- | Validate predicate @p@ for the given @f a@.
     validate1 :: Proxy# p -> f a -> Maybe (RefineFailure String)

@@ -1,3 +1,5 @@
+-- | Predicate re-exports, for when you're heavily using refinement types.
+
 module Rerefined.Predicates
   (
   -- * Base

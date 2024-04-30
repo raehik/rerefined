@@ -14,13 +14,79 @@ Rewrite of Nikita Volkov's [refined][refined-nv-hackage] library.
 * internals: fewer dependencies (no `aeson`), better errors, more concise
 
 ## Why?
-I used the original refined library fairly extensively to power other libraries
-(see [strongweak][strongweak-hackage], [binrep][binrep-hackage]), though I moved
-to a fork [refined1][refined1-hackage] some time ago to provide a feature I
-needed. I think the library has some flaws and I want to contribute, but my
-tiny tweaks are still pending. A good excuse to rewrite from the ground up.
+I used the original [refined][refined-nv-hackage] library fairly extensively to
+power other libraries (see [strongweak][strongweak-hackage],
+[binrep][binrep-hackage]), though I moved to a fork [refined1][refined1-hackage]
+some time ago to provide a feature I needed. I think the library has some flaws
+and I want to contribute, but my tiny tweaks are still pending after a few
+years. A good excuse to rewrite from the ground up.
 
-That said, all source code is original.
+All source code is original.
+
+## Major changes from original refined
+### Simplified errors
+refined encoded the logical predicates in its error type. This doesn't enable
+any further analysis, just turns a non-sum type into a sum type and complicates
+consumption. Furthermore, this error type is first transformed into another
+recursive ADT, which is then pretty printed. This is unnecessary (even mentioned
+in the code).
+
+rerefined has a single-constructor error type which can be easily and
+efficiently turned into a `String` in a single pass.
+
+### No insidious `Typeable` contexts
+See [refined#101](https://github.com/nikita-volkov/refined/issues/101).
+`Typeable` is useful, but the way it is used brings lots of `Typeable` contexts.
+
+rerefined has predicates declare their "predicate name" explicitly. You can
+still use `Typeable` for non-combinator predicates, where no `Typeable` contexts
+are incurred, but combinator predicates such as binary logical predicates
+require more work. However, you can use all the existing `ShowS` helpers (that's
+how `typeRep`s are printed anyway), so it's just like writing a manual `Show`
+instance! Plus, combinator predicates are fairly unusual, so library users will
+probably never see this.
+
+Note that this change also improves predicate name display, since `typeRep`
+tries to display inferred/hidden kinds for wrapped predicates in combinator
+predicates, which are uninteresting. We can ignore these in our manual
+instances!
+
+### Cleaner design
+What do `LessThan`, `GreaterThan`, `EqualTo` etc. have in common? They're all
+relational binary operators where one value is a pre-filled `Natural`. rerefined
+packs all of these into a single predicate that takes a type-level relational
+operator. Only one instance for the same amount of code, and much easier to
+reason about.
+
+We take this even further and allow passing a type-level sign, to enable
+comparing negative values.
+
+We take this _even_ further and use the same relational operator definitions to
+define length comparisons, where the other value is taken from the input's
+length (rather than its numeric value). This does not take a sign, since length
+must be non-negative.
+
+### More instances
+You know that length comparison predicate above? It has a _single instance_ for
+each of `Refined1` and `Refined`:
+
+```haskell
+-- | Compare the length of a 'Foldable' to a type-level 'Natural' using the
+--   given 'RelOp'.
+instance (KnownNat n, Foldable f, ReifyRelOp op)
+  => Refine1 (CompareLength op n) f where
+    validate1 p = validateCompareLength p . length
+
+-- | Compare the length of a 'MonoFoldable' to a type-level 'Natural' using the
+--   given 'RelOp'.
+instance (KnownNat n, MonoFoldable a, ReifyRelOp op)
+  => Refine (CompareLength op n) a where
+    validate p = validateCompareLength p . olength
+```
+
+We get a ton more instances for a ton less code. (Note that mono-foldable has a
+surprisingly small footprint, as most of its transitive dependencies are core
+libraries.)
 
 ## License
 Provided under the MIT license. See `LICENSE` for license text.

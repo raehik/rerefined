@@ -26,5 +26,6 @@ refine1TH
     -> TH.Code m (Refined1 p f a)
 refine1TH = either refineTHFail TH.liftTyped . refine1 @p @f
 
+-- | Template Haskell refinement failure helper.
 refineTHFail :: forall a m. MonadFail m => RefineFailure String -> TH.Code m a
 refineTHFail = TH.liftCode . fail . prettyRefineFailure
