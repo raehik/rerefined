@@ -7,7 +7,7 @@ import Data.MonoTraversable ( MonoFoldable(olength) )
 import GHC.Exts ( Proxy# )
 
 import Rerefined.Refined
-import GHC.Exts ( coerce )
+import Rerefined.Refine.Unsafe ( unsafeRerefine )
 import GHC.TypeError
 import Data.Kind ( type Constraint )
 
@@ -35,13 +35,21 @@ validateCompareLength p len =
         (reifyRelOp @op len (fromIntegral n))
   where n = natVal' (proxy# @n)
 
+-- | Widen a length comparison predicate.
+--
+-- Only valid widenings are permitted, checked at compile time.
+--
+-- Example: Given a >= 1, we know also that a >= 0. Thus, this function allows
+-- you to turn a @Refined (CompareLength GTE 1) a@ into a @Refined
+-- (CompareLength GTE 0) a@.
+--
 -- TODO improve type error here
 widenCompareLength
     :: forall m op n a
     .  WROE op n m
     => Refined (CompareLength op n) a
     -> Refined (CompareLength op m) a
-widenCompareLength = coerce
+widenCompareLength = unsafeRerefine
 
 type WROE op n m = WROE' op n m (WidenRelOp op n m)
 type WROE' :: RelOp -> Natural -> Natural -> Bool -> Constraint
