@@ -5,7 +5,7 @@ cabal-version: 1.12
 -- see: https://github.com/sol/hpack
 
 name:           rerefined
-version:        0.0.0
+version:        0.1.0
 synopsis:       Refinement types, again
 description:    Please see README.md.
 category:       Types, Data
