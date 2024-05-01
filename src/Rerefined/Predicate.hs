@@ -60,4 +60,4 @@ data RefineFailure a = RefineFailure
   -- ^ Any wrapped errors, for combinator predicates.
   --
   -- What these are, and their order, should be noted in 'refineFailureDetail'.
-  }
+  } deriving stock Show

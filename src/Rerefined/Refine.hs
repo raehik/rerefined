@@ -1,6 +1,21 @@
-{-# LANGUAGE OverloadedStrings, AllowAmbiguousTypes #-}
+{-# LANGUAGE OverloadedStrings #-}
 
-module Rerefined.Refine where
+module Rerefined.Refine
+  (
+  -- * @Refined@
+    type Refined
+  , refine
+  , unrefine
+
+  -- * @Refined1@
+  , type Refined1
+  , refine1
+  , unrefine1
+
+  -- * Errors
+  , type RefineFailure
+  , prettyRefineFailure
+  ) where
 
 import Rerefined.Refined
 import Rerefined.Refined1

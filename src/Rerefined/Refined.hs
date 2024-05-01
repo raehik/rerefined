@@ -1,3 +1,8 @@
+-- | 'Refined' definition.
+--
+-- Not intended for external use. For unsafe refines, use
+-- 'Rerefined.Refine.Unsafe'.
+
 module Rerefined.Refined where
 
 import Language.Haskell.TH.Syntax ( Lift )

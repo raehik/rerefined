@@ -5,8 +5,6 @@ module Rerefined.Refine.TH
 
 import Rerefined.Refine
 import Rerefined.Predicate
-import Rerefined.Refined
-import Rerefined.Refined1
 import Language.Haskell.TH.Syntax qualified as TH
 
 -- | Refine @a@ with predicate @p@ at compile time via Template Haskell.

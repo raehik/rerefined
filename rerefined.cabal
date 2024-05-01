@@ -26,6 +26,7 @@ source-repository head
 
 library
   exposed-modules:
+      Rerefined
       Rerefined.Predicate
       Rerefined.Predicate.Common
       Rerefined.Predicate.Fail
