@@ -1,3 +1,6 @@
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE UndecidableInstances #-} -- for GHC <= 9.4, WROE
+
 module Rerefined.Predicate.Relational.Length where
 
 import Rerefined.Predicate.Common
@@ -6,8 +9,7 @@ import GHC.TypeNats ( Natural, KnownNat, natVal' )
 import Data.MonoTraversable ( MonoFoldable(olength) )
 import GHC.Exts ( Proxy# )
 
-import Rerefined.Refined
-import Rerefined.Refine.Unsafe ( unsafeRerefine )
+import Rerefined.Refine.Unsafe
 import GHC.TypeError
 import Data.Kind ( type Constraint )
 
@@ -29,9 +31,9 @@ instance (KnownNat n, MonoFoldable a, ReifyRelOp op)
 
 validateCompareLength
     :: forall op n. (KnownNat n, ReifyRelOp op)
-    => Proxy# (CompareLength op n) -> Int -> Maybe (RefineFailure String)
+    => Proxy# (CompareLength op n) -> Int -> Maybe RefineFailure
 validateCompareLength p len =
-    validateBool p ("length not "<>reifyRelOpPretty @op<>" "<>show n)
+    validateBool p ("length not "<>reifyRelOpPretty @op<>" ") -- TODO <>show n)
         (reifyRelOp @op len (fromIntegral n))
   where n = natVal' (proxy# @n)
 
@@ -50,6 +52,22 @@ widenCompareLength
     => Refined (CompareLength op n) a
     -> Refined (CompareLength op m) a
 widenCompareLength = unsafeRerefine
+
+-- | Widen a length comparison predicate.
+--
+-- Only valid widenings are permitted, checked at compile time.
+--
+-- Example: Given a >= 1, we know also that a >= 0. Thus, this function allows
+-- you to turn a @Refined1 (CompareLength GTE 1) f a@ into a @Refined1
+-- (CompareLength GTE 0) f a@.
+--
+-- TODO improve type error here
+widenCompareLength1
+    :: forall m op n f a
+    .  WROE op n m
+    => Refined1 (CompareLength op n) f a
+    -> Refined1 (CompareLength op m) f a
+widenCompareLength1 = unsafeRerefine1
 
 type WROE op n m = WROE' op n m (WidenRelOp op n m)
 type WROE' :: RelOp -> Natural -> Natural -> Bool -> Constraint

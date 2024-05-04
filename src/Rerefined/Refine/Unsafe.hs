@@ -23,7 +23,6 @@ module Rerefined.Refine.Unsafe
   ) where
 
 import Rerefined.Refined
-import Rerefined.Refined1
 
 -- | Construct a 'Refined' without validating the predicate @p@.
 --

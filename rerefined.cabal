@@ -16,6 +16,10 @@ maintainer:     Ben Orchard <thefirstmuffinman@gmail.com>
 license:        MIT
 license-file:   LICENSE
 build-type:     Simple
+tested-with:
+    GHC==9.8
+  , GHC==9.6
+  , GHC==9.4
 extra-source-files:
     README.md
     CHANGELOG.md
@@ -26,6 +30,8 @@ source-repository head
 
 library
   exposed-modules:
+      Raehik.Data.Text.Builder.Linear.ShowUtils
+      Raehik.Data.Typeable.Internal.NotExported
       Rerefined
       Rerefined.Predicate
       Rerefined.Predicate.Common
@@ -37,12 +43,11 @@ library
       Rerefined.Predicate.Relational.Value
       Rerefined.Predicate.Succeed
       Rerefined.Predicates
-      Rerefined.Predicates.RefinedShim
       Rerefined.Refine
       Rerefined.Refine.TH
       Rerefined.Refine.Unsafe
       Rerefined.Refined
-      Rerefined.Refined1
+      Tmp
   other-modules:
       Paths_rerefined
   hs-source-dirs:
@@ -61,7 +66,10 @@ library
   ghc-options: -Wall -Wno-unticked-promoted-constructors
   build-depends:
       base >=4.16 && <5
+    , ghc-prim
     , mono-traversable >=1.0.17.0 && <1.1
-    , template-haskell
+    , template-haskell >=2.19.0.0 && <2.22
+    , text
+    , text-builder-linear >=0.1.2 && <0.2
     , typeably >=0.1.0 && <0.2
   default-language: GHC2021

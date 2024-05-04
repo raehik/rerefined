@@ -8,11 +8,11 @@ extra-source-files:
 category: Types, Data
 license: MIT
 license-file: LICENSE
-#tested-with:
-#- GHC==9.8
-#- GHC==9.6
-#- GHC==9.4
-#- GHC==9.2
+tested-with:
+- GHC==9.8
+- GHC==9.6
+- GHC==9.4
+# GHC 9.2 doesn't have GHC.TypeError, so cba for now
 
 github: raehik/rerefined
 maintainer: Ben Orchard <thefirstmuffinman@gmail.com>
@@ -63,7 +63,10 @@ dependencies:
 - base >= 4.16 && < 5
 - typeably ^>= 0.1.0
 - mono-traversable ^>= 1.0.17.0
-- template-haskell # TODO
+- template-haskell >= 2.19.0.0 && < 2.22
+- text-builder-linear ^>= 0.1.2
+- text # TODO
+- ghc-prim # TODO for GHC.Types (for partial access to TypeRep types)
 
 library:
   source-dirs: src

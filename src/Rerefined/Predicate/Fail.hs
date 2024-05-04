@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Rerefined.Predicate.Fail where
 
 import Rerefined.Predicate.Common

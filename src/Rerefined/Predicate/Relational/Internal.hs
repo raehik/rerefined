@@ -1,10 +1,10 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE UndecidableInstances #-} -- for weird TODO stuff
 
 module Rerefined.Predicate.Relational.Internal where
 
-import Data.Typeable ( Typeable )
-
+import Rerefined.Predicate.Common
 import GHC.TypeNats
 import Data.Type.Ord ( OrdCond )
 
@@ -34,7 +34,7 @@ class Typeable op => ReifyRelOp (op :: RelOp) where
     reifyRelOp :: forall a. (Num a, Ord a) => a -> a -> Bool
 
     -- | Pretty operator.
-    reifyRelOpPretty :: String
+    reifyRelOpPretty :: IsString a => a
 
 instance ReifyRelOp LT' where
     reifyRelOp = (<)

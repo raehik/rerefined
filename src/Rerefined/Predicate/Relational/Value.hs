@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
 module Rerefined.Predicate.Relational.Value where
@@ -9,11 +10,10 @@ import GHC.TypeNats ( Natural, KnownNat, natVal' )
 -- | Compare value to a type-level 'Natural' using the given 'RelOp'.
 data CompareValue (op :: RelOp) (sign :: Sign) (n :: Natural)
     deriving Predicate via Typeably (CompareValue op sign n)
--- TODO I could write custom predicateNames here if I wanted to override how
--- they display. But I don't mind the expanded type synonyms. @CompareValue
--- 'CBOpLT 10@ still makes sense to me, especially with the extra message.
---
--- I should simplify op names, but not sure what to, since I can't use LT/EQ/GT.
+{- TODO consider custom predicateName. like
+    @Value <= n@            instead of
+    @CompareValue LTE n@
+-}
 {-
 instance KnownNat n => Predicate (LessThan n) where
     predicateName d = showParen (d > 10) $
@@ -30,13 +30,14 @@ instance
     -- type, as otherwise we'd need a @'Show' a@
     validate p a =
         validateBool p
-            ("value not "<>reifyRelOpPretty @op<>" "<>signPretty @sign<>show n)
+            ("value not "<>reifyRelOpPretty @op<>" "<>signPretty @sign) -- TODO <>show n)
             (reifyRelOp @op a (reifySignedNat @sign @n))
       where n = natVal' (proxy# @n)
 
 data Sign = Pos | Neg
 
-class Typeable sign => ReifySign (sign :: Sign) where signPretty :: String
+class Typeable sign => ReifySign (sign :: Sign) where
+    signPretty :: IsString a => a
 instance ReifySign Pos where signPretty = ""
 instance ReifySign Neg where signPretty = "-"
 

@@ -1,7 +1,4 @@
 # rerefined to-dos
-* turn unrefine into a regular function instead of a record. makes stock Show
-  instance nicer lol. (document this decision too)
-* clarify unsafe refines etc.
 * think about reassociation, other weird utils (refined actually provides lots)
 * think about strengthening and weakening. do want but the naming overlaps with
   my strongweak library... maybe that's just life? not a massive issue
@@ -31,3 +28,12 @@
 
 ## Pretty failures
 * TypeReps always tick promoted cstrs, even when they don't need disambiguating.
+
+## `Text` in failures
+`ShowS` is acceptable for short inputs-- but it's embedded in a larger string,
+and that string eventually must be printed. We are much better off using `Text`.
+
+The lovely #haskell folks pointed me to `text-builder-linear`. If I could write
+a `TypeRep` pretty printer in that, I may be able to use it. Otherwise, I can
+stick with `text-show` or `text-display`, which both use the lazy `Text`
+builder.

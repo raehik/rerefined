@@ -6,6 +6,7 @@ module Rerefined.Refine.TH
 import Rerefined.Refine
 import Rerefined.Predicate
 import Language.Haskell.TH.Syntax qualified as TH
+import Data.Text qualified as Text
 
 -- | Refine @a@ with predicate @p@ at compile time via Template Haskell.
 refineTH
@@ -25,5 +26,6 @@ refine1TH
 refine1TH = either refineTHFail TH.liftTyped . refine1 @p @f
 
 -- | Template Haskell refinement failure helper.
-refineTHFail :: forall a m. MonadFail m => RefineFailure String -> TH.Code m a
-refineTHFail = TH.liftCode . fail . prettyRefineFailure
+refineTHFail
+    :: forall a m. MonadFail m => RefineFailure -> TH.Code m a
+refineTHFail = TH.liftCode . fail . Text.unpack . prettyRefineFailure

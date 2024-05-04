@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
 module Rerefined.Predicate.Logical where
@@ -15,16 +16,27 @@ data LogicOp = And | Or | Nand | Nor | Xor | Xnor
 -- | A logical binary operation on two predicates.
 data Logical (op :: LogicOp) l r
 
+{-
 -- TODO could do whatever we want here e.g. infix. (but idk what e.g. XNOR uses)
 instance (Predicate l, Predicate r, ReifyLogicOp op)
   => Predicate (Logical op l r) where
-    predicateName _ d = showParen (d > 10) $
-          showString "Logical "
-        . showString (reifyLogicOpPretty @op) . showChar ' '
-        . predicateName (proxy# @l) 11 . showChar ' '
-        . predicateName (proxy# @r) 11
+    predicateName _ d = tshowParen (d > 10) $
+           "Logical "
+        <> reifyLogicOpPretty @op <> tshowChar ' '
+        <> predicateName (proxy# @l) 11 <> tshowChar ' '
+        <> predicateName (proxy# @r) 11
+-}
 
-instance (Refine l a, Refine r a, ReifyLogicOp op)
+-- | TODO making all ops pred 3. but || is infixr 2 in base. meh it's up to me,
+--   not really sure.
+instance (Predicate l, Predicate r, ReifyLogicOp' op)
+  => Predicate (Logical op l r) where
+    predicateName _ d = tshowParen (d > 3) $
+           predicateName (proxy# @l) 4 <> tshowChar ' '
+        <> reifyLogicOpPretty' @op     <> tshowChar ' '
+        <> predicateName (proxy# @r) 4
+
+instance (Refine l a, Refine r a, ReifyLogicOp op, ReifyLogicOp' op)
   => Refine (Logical op l r) a where
     validate p a =
         reifyLogicOp @op (validateFail p)
@@ -33,9 +45,9 @@ instance (Refine l a, Refine r a, ReifyLogicOp op)
 
 -- | Reify a logical binary operator type tag.
 class ReifyLogicOp (op :: LogicOp) where
-    reifyLogicOpPretty :: String
+    reifyLogicOpPretty :: IsString a => a
     reifyLogicOp
-        :: (String -> [a] -> Maybe a)
+        :: (Builder -> [a] -> Maybe a)
         -> Maybe a
         -> Maybe a
         -> Maybe a
@@ -136,3 +148,24 @@ rerefineDeMorgans2
     :: Refined (Not (Logical And l r))       a
     -> Refined (Logical Or  (Not l) (Not r)) a
 rerefineDeMorgans2 = unsafeRerefine
+
+class ReifyLogicOp' (op :: LogicOp) where
+    reifyLogicOpPretty' :: IsString a => a
+
+instance ReifyLogicOp' And where
+    reifyLogicOpPretty' = "&&"
+
+instance ReifyLogicOp' Or where
+    reifyLogicOpPretty' = "||"
+
+instance ReifyLogicOp' Nand where
+    reifyLogicOpPretty' = "!&"
+
+instance ReifyLogicOp' Nor where
+    reifyLogicOpPretty' = "!|"
+
+instance ReifyLogicOp' Xor where
+    reifyLogicOpPretty' = "^^"
+
+instance ReifyLogicOp' Xnor where
+    reifyLogicOpPretty' = "!^"
