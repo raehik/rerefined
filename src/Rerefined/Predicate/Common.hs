@@ -18,12 +18,12 @@ module Rerefined.Predicate.Common
 
 import Rerefined.Predicate
 import GHC.Exts ( Proxy#, proxy#, IsString(fromString) )
-import GHC.TypeLits ( KnownSymbol, Symbol )
+import GHC.TypeLits ( KnownSymbol )
 import Data.Typeable.Typeably
 import Data.Typeable ( Typeable )
 import Data.Text.Builder.Linear qualified as TBL
-import Data.Text ( Text )
 
+-- TODO maybe move to main 'Rerefined.Predicate' module
 type KnownPredicateName p = KnownSymbol (PredicateName 0 p)
 
 -- | Shortcut for returning a predicate validation failure.
@@ -32,7 +32,8 @@ validateFail
     .  (Predicate p, KnownPredicateName p)
     => Proxy# p -> TBL.Builder -> [RefineFailure]
     -> Maybe RefineFailure
-validateFail p msg es = Just $ RefineFailure (fromString $ predicateName @p) msg es
+validateFail _p msg es =
+    Just $ RefineFailure (fromString $ predicateName @p) msg es
 
 -- | Shortcut for simply validating a 'Bool'.
 validateBool

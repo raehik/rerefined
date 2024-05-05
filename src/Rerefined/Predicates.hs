@@ -7,8 +7,8 @@ module Rerefined.Predicates
   , Fail
 
   -- * Logical
-  , Not
-  , Logical
+  --, Not
+  --, Logical
 
   -- * Relational
   , CompareValue
@@ -19,5 +19,5 @@ module Rerefined.Predicates
 
 import Rerefined.Predicate.Succeed
 import Rerefined.Predicate.Fail
-import Rerefined.Predicate.Logical
+--import Rerefined.Predicate.Logical
 import Rerefined.Predicate.Relational

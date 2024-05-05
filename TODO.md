@@ -10,6 +10,19 @@
   the predicate nicely and slots the value in!
   * hrmmmmm idk exactly how it'll look. maybe leave till later.
 
+## Predicate names: fixity
+I do precedence, but not associativity. Not sure how to. `Show` doesn't help.
+See: http://intrologic.stanford.edu/dictionary/operator_precedence.html
+
+## Predicate names: precedence
+An answer on this StackExchange question suggests not trying to avoid brackets
+too much...
+https://cs.stackexchange.com/questions/43856/operator-precedence-in-propositional-logic
+
+I don't really agree. They also say `A v B v C` is fine because it commutes, but
+that's not useful from a syntactic point of view, so I feel safer ignoring their
+opinion.
+
 ## Errors: merge detail and inner?
 With my predicate name improvements, the refinement failure detail field hardly
 seems to state anything anymore. Perhaps all it need do is disambiguate what

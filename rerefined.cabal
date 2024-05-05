@@ -33,8 +33,16 @@ library
       Rerefined
       Rerefined.Predicate
       Rerefined.Predicate.Common
+      Rerefined.Predicate.Common.Binary
       Rerefined.Predicate.Fail
-      Rerefined.Predicate.Logical
+      Rerefined.Predicate.Logical.And
+      Rerefined.Predicate.Logical.If
+      Rerefined.Predicate.Logical.Iff
+      Rerefined.Predicate.Logical.Nand
+      Rerefined.Predicate.Logical.Nor
+      Rerefined.Predicate.Logical.Not
+      Rerefined.Predicate.Logical.Or
+      Rerefined.Predicate.Logical.Xor
       Rerefined.Predicate.Relational
       Rerefined.Predicate.Relational.Internal
       Rerefined.Predicate.Relational.Length
