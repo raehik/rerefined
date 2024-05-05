@@ -10,10 +10,8 @@ module Rerefined.Predicate
   , predicateName
   ) where
 
-import GHC.Exts ( Proxy# )
-import Data.Proxy ( Proxy(Proxy) )
+import GHC.Exts ( Proxy#, proxy# )
 import Data.Text.Builder.Linear qualified as TBL
-import GHC.Exts ( proxy# )
 import GHC.TypeLits ( Natural, Symbol, KnownSymbol, symbolVal' )
 
 -- | Types which define refinements on other types.
@@ -22,6 +20,10 @@ class Predicate p where
     --
     -- Predicate names should aim to communicate the meaning of the predicate as
     -- clearly and concisely as possible.
+    --
+    -- Consider using @type-level-show@ to build this. However, note that GHC
+    -- cannot figure out 'KnownSymbol' when there are type families in play, so
+    -- you may need to put 'KnownSymbol' constraints in instance contexts.
     type PredicateName (d :: Natural) p :: Symbol
         -- ^ TODO d: the operator precedence of the enclosing context (a number
         --   from 0 to 11). Function application has precedence 10.

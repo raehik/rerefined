@@ -12,17 +12,21 @@ import GHC.Exts ( Proxy# )
 import Rerefined.Refine.Unsafe
 import GHC.TypeError
 import Data.Kind ( type Constraint )
+import TypeLevelShow.Utils
+import TypeLevelShow.Natural
 
 -- | Compare length to a type-level 'Natural' using the given 'RelOp'.
 data CompareLength (op :: RelOp) (n :: Natural)
 instance Predicate (CompareLength op n) where
-    type PredicateName d (CompareLength op n) = "TODO"
+    -- TODO base relops are infix 4
+    type PredicateName d (CompareLength op n) = ShowParen (d > 4)
+        ("Length " ++ ShowRelOp op ++ ShowChar ' ' ++ ShowNatDec n)
 
 -- | Compare the length of a 'Foldable' to a type-level 'Natural' using the
 --   given 'RelOp'.
 instance
   ( KnownNat n, Foldable f, ReifyRelOp op
-  , KnownSymbol (PredicateName 0 (CompareLength op n))
+  , KnownPredicateName (CompareLength op n)
   ) => Refine1 (CompareLength op n) f where
     validate1 p = validateCompareLength p . length
 
@@ -30,13 +34,15 @@ instance
 --   given 'RelOp'.
 instance
   ( KnownNat n, MonoFoldable a, ReifyRelOp op
-  , KnownSymbol (PredicateName 0 (CompareLength op n))
+  , KnownPredicateName (CompareLength op n)
   ) => Refine (CompareLength op n) a where
     validate p = validateCompareLength p . olength
 
 validateCompareLength
-    :: forall op n. (KnownNat n, ReifyRelOp op)
-    => Proxy# (CompareLength op n) -> Int -> Maybe RefineFailure
+    :: forall op n
+    .  ( KnownNat n, ReifyRelOp op
+       , KnownPredicateName (CompareLength op n)
+    ) => Proxy# (CompareLength op n) -> Int -> Maybe RefineFailure
 validateCompareLength p len =
     validateBool p ("length not "<>reifyRelOpPretty @op<>" ") -- TODO <>show n)
         (reifyRelOp @op len (fromIntegral n))

@@ -9,31 +9,27 @@ module Rerefined.Predicate.Common
   , Typeably(..), Typeable
   , proxy#
   , TBL.Builder
-  , tshowParen
-  , tshowChar
-  , IsString
-  , KnownSymbol
+  , IsString -- TODO remove
 
   -- * Predicate validation
   , validateFail, validateBool
-
-  -- * Predicate name
-  --, predicateName1, predicateName2
+  , KnownPredicateName
   ) where
 
 import Rerefined.Predicate
 import GHC.Exts ( Proxy#, proxy#, IsString(fromString) )
-import GHC.TypeLits ( KnownSymbol )
+import GHC.TypeLits ( KnownSymbol, Symbol )
 import Data.Typeable.Typeably
 import Data.Typeable ( Typeable )
 import Data.Text.Builder.Linear qualified as TBL
 import Data.Text ( Text )
-import Raehik.Data.Text.Builder.Linear.ShowUtils ( tshowParen )
+
+type KnownPredicateName p = KnownSymbol (PredicateName 0 p)
 
 -- | Shortcut for returning a predicate validation failure.
 validateFail
     :: forall p
-    .  (Predicate p, KnownSymbol (PredicateName 0 p))
+    .  (Predicate p, KnownPredicateName p)
     => Proxy# p -> TBL.Builder -> [RefineFailure]
     -> Maybe RefineFailure
 validateFail p msg es = Just $ RefineFailure (fromString $ predicateName @p) msg es
@@ -41,27 +37,9 @@ validateFail p msg es = Just $ RefineFailure (fromString $ predicateName @p) msg
 -- | Shortcut for simply validating a 'Bool'.
 validateBool
     :: forall p
-    .  (Predicate p, KnownSymbol (PredicateName 0 p))
+    .  (Predicate p, KnownPredicateName p)
     => Proxy# p -> TBL.Builder -> Bool
     -> Maybe RefineFailure
 validateBool p e = \case
   True  -> Nothing
   False -> validateFail p e []
-
-{-
-predicateName1 :: forall p. Predicate p => Text -> Int -> TBL.Builder
-predicateName1 pName d = tshowParen (d > 10) $
-       TBL.fromText pName <> TBL.fromChar ' '
-    <> predicateName (proxy# @p) 11
-
-predicateName2
-    :: forall l r. (Predicate l, Predicate r) => Text -> Int -> TBL.Builder
-predicateName2 pName d = tshowParen (d > 10) $
-       TBL.fromText pName <> TBL.fromChar ' '
-    <> predicateName (proxy# @l) 11 <> TBL.fromChar ' '
-    <> predicateName (proxy# @r) 11
--}
-
--- | Renamed 'TBL.fromChar'.
-tshowChar :: Char -> TBL.Builder
-tshowChar = TBL.fromChar

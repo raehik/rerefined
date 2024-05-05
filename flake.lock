@@ -79,11 +79,11 @@
     "type-level-show": {
       "flake": false,
       "locked": {
-        "lastModified": 1714864838,
-        "narHash": "sha256-QXxszhem/21VvDDMj0ENskCLaH59EKk453gLdiDxQBI=",
+        "lastModified": 1714871444,
+        "narHash": "sha256-wygPfLxDolkhhrHlyxCopgBBef2xQAIZj0j0vB7oiKs=",
         "owner": "raehik",
         "repo": "type-level-show",
-        "rev": "fac219dbe3b96bed78b1bf5948e00e1603e88c43",
+        "rev": "2b61b6958aedc09775d785caa668adac36ebe781",
         "type": "github"
       },
       "original": {

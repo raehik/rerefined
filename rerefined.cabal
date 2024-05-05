@@ -30,8 +30,6 @@ source-repository head
 
 library
   exposed-modules:
-      Raehik.Data.Text.Builder.Linear.ShowUtils
-      Raehik.Data.Typeable.Internal.NotExported
       Rerefined
       Rerefined.Predicate
       Rerefined.Predicate.Common
@@ -47,7 +45,6 @@ library
       Rerefined.Refine.TH
       Rerefined.Refine.Unsafe
       Rerefined.Refined
-      Tmp
   other-modules:
       Paths_rerefined
   hs-source-dirs:

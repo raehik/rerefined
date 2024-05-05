@@ -37,7 +37,7 @@ instance (Predicate l, Predicate r) => Predicate (Logical op l r) where
 
 instance
   ( Refine l a, Refine r a, ReifyLogicOp op
-  , KnownSymbol (PredicateName 0 (Logical op l r))
+  , KnownPredicateName (Logical op l r)
   ) => Refine (Logical op l r) a where
     validate p a =
         reifyLogicOp @op (validateFail p)
@@ -124,7 +124,7 @@ instance Predicate p => Predicate (Not p) where
     -- TODO not sure on precedence here
     type PredicateName d (Not p) = ShowParen (d > 10) "¬ " ++ PredicateName 11 p
 
-instance (Refine p a, KnownSymbol (PredicateName 0 (Not p)))
+instance (Refine p a, KnownPredicateName (Not p))
   => Refine (Not p) a where
     validate p a =
         case validate (proxy# @p) a of

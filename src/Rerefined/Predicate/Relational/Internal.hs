@@ -7,6 +7,7 @@ module Rerefined.Predicate.Relational.Internal where
 import Rerefined.Predicate.Common
 import GHC.TypeNats
 import Data.Type.Ord ( OrdCond )
+import GHC.TypeLits ( Symbol )
 
 -- | Relational operator.
 --
@@ -23,6 +24,14 @@ data RelOp
   | NEQ -- ^ '/=' less than or             greater than
   | GTE -- ^ '>='              equal to or greater than
   | GT' -- ^ '>'                           greater than
+
+type family ShowRelOp (op :: RelOp) :: Symbol where
+    ShowRelOp LT' = "<"
+    ShowRelOp LTE = "<="
+    ShowRelOp EQ' = "=="
+    ShowRelOp NEQ = "/="
+    ShowRelOp GTE = ">="
+    ShowRelOp GT' = ">"
 
 -- | Reify a relational operator type tag.
 --
