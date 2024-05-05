@@ -1,9 +1,10 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Rerefined.Predicate.Succeed where
 
 import Rerefined.Predicate.Common
 
 -- | The unit predicate. Always succeeds.
-data Succeed deriving Predicate via Typeably Succeed
-
-instance Refine Succeed a where
-    validate _ _ = Nothing
+data Succeed
+instance Predicate Succeed where type PredicateName d Succeed = "Succeed"
+instance Refine Succeed a where validate _ _ = Nothing

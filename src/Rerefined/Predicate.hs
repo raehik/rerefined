@@ -1,4 +1,4 @@
--- {-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE AllowAmbiguousTypes #-}
 
 -- | Base definitions for refinement predicates.
 
@@ -6,15 +6,15 @@ module Rerefined.Predicate
   ( Refine(validate)
   , Refine1(validate1)
   , RefineFailure(..)
-  , Predicate(predicateName)
+  , Predicate(..)
+  , predicateName
   ) where
 
 import GHC.Exts ( Proxy# )
-import Data.Typeable ( Typeable, typeRep )
-import Data.Typeable.Typeably
 import Data.Proxy ( Proxy(Proxy) )
 import Data.Text.Builder.Linear qualified as TBL
-import GHC.Exts ( fromString )
+import GHC.Exts ( proxy# )
+import GHC.TypeLits ( Natural, Symbol, KnownSymbol, symbolVal' )
 
 -- | Types which define refinements on other types.
 class Predicate p where
@@ -22,34 +22,20 @@ class Predicate p where
     --
     -- Predicate names should aim to communicate the meaning of the predicate as
     -- clearly and concisely as possible.
-    --
-    -- For non-combinator predicates (i.e. your predicate does not wrap another
-    -- predicate), this may be derived this via the type's 'TypeRep'. Derive via
-    -- @'Typeably' a@.
-    --
-    -- Combinator predicates must define this manually, as using 'Typeable'
-    -- would incur insidious 'Typeable' contexts for wrapped predicates.
-    -- TODO should be some generics and/or TH I can write to resolve this.
-    --
-    -- It is suggested that you stick with the 'TypeRep' of your type, as this
-    -- is usually clear and always easiest to map back to definitions. However,
-    -- you may wish to override this e.g. if your type is highly parameterized
-    -- and you wish to hide this for simplicity (see
-    -- 'Rerefined.Predicate.Logical.Logical').
-    predicateName
-        :: Proxy# p
-        -> Int
-        -- ^ the operator precedence of the enclosing context (a number from 0
-        --   to 11). Function application has precedence 10.
-        -> TBL.Builder
+    type PredicateName (d :: Natural) p :: Symbol
+        -- ^ TODO d: the operator precedence of the enclosing context (a number
+        --   from 0 to 11). Function application has precedence 10.
 
--- | Fill out predicate name using the type's 'TypeRep', via 'Typeable'.
---
--- Do not use this for combinator predicates. Doing so will incur insidious
--- 'Typeable' contexts for wrapped predicates.
-instance Typeable a => Predicate (Typeably a) where
-    -- TODO use my new text one guh...
-    predicateName _ d = fromString $ showsPrec d (typeRep (Proxy @a)) ""
+{- TODO
+stuffing the KnownSymbol constraint into a Predicate superclass is handy, but
+then we have to handle it in combinator predicates. probably _not_ doing so is
+better, so I'm trying that first.
+-}
+
+-- | Reify predicate name.
+predicateName
+    :: forall p. (Predicate p, KnownSymbol (PredicateName 0 p)) => String
+predicateName = symbolVal' (proxy# @(PredicateName 0 p))
 
 -- | Refine @a@ with predicate @p@.
 class Predicate p => Refine p a where
@@ -83,5 +69,3 @@ data RefineFailure = RefineFailure
   --
   -- What these are, and their order, should be noted in 'refineFailureDetail'.
   } deriving stock Show
-
---prettyPredicate :: forall p. Predicate p => String

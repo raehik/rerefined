@@ -12,16 +12,18 @@ module Rerefined.Predicate.Common
   , tshowParen
   , tshowChar
   , IsString
+  , KnownSymbol
 
   -- * Predicate validation
   , validateFail, validateBool
 
   -- * Predicate name
-  , predicateName1, predicateName2
+  --, predicateName1, predicateName2
   ) where
 
 import Rerefined.Predicate
-import GHC.Exts ( Proxy#, proxy#, IsString )
+import GHC.Exts ( Proxy#, proxy#, IsString(fromString) )
+import GHC.TypeLits ( KnownSymbol )
 import Data.Typeable.Typeably
 import Data.Typeable ( Typeable )
 import Data.Text.Builder.Linear qualified as TBL
@@ -31,19 +33,22 @@ import Raehik.Data.Text.Builder.Linear.ShowUtils ( tshowParen )
 -- | Shortcut for returning a predicate validation failure.
 validateFail
     :: forall p
-    .  Predicate p
+    .  (Predicate p, KnownSymbol (PredicateName 0 p))
     => Proxy# p -> TBL.Builder -> [RefineFailure]
     -> Maybe RefineFailure
-validateFail p msg es = Just $ RefineFailure (predicateName p 0) msg es
+validateFail p msg es = Just $ RefineFailure (fromString $ predicateName @p) msg es
 
 -- | Shortcut for simply validating a 'Bool'.
 validateBool
-    :: Predicate p => Proxy# p -> TBL.Builder -> Bool
+    :: forall p
+    .  (Predicate p, KnownSymbol (PredicateName 0 p))
+    => Proxy# p -> TBL.Builder -> Bool
     -> Maybe RefineFailure
 validateBool p e = \case
   True  -> Nothing
   False -> validateFail p e []
 
+{-
 predicateName1 :: forall p. Predicate p => Text -> Int -> TBL.Builder
 predicateName1 pName d = tshowParen (d > 10) $
        TBL.fromText pName <> TBL.fromChar ' '
@@ -55,6 +60,7 @@ predicateName2 pName d = tshowParen (d > 10) $
        TBL.fromText pName <> TBL.fromChar ' '
     <> predicateName (proxy# @l) 11 <> TBL.fromChar ' '
     <> predicateName (proxy# @r) 11
+-}
 
 -- | Renamed 'TBL.fromChar'.
 tshowChar :: Char -> TBL.Builder

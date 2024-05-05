@@ -3,7 +3,6 @@
 #   derivation being used (because it's auto-grabbed). really just wanna change
 #   `ghc-shell-for` to `ghcXY` and keep the `-${pname}-${version}`!
 # * honestly maybe I move away from haskell-flake...? it's weird
-
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -11,6 +10,8 @@
     haskell-flake.url = "github:srid/haskell-flake";
     typeably.url   = "github:raehik/typeably";
     typeably.flake = false;
+    type-level-show.url   = "github:raehik/type-level-show";
+    type-level-show.flake = false;
   };
   outputs = inputs:
   let
@@ -34,21 +35,25 @@
         haskellProjects.ghc98 = {
           basePackages = pkgs.haskell.packages.ghc98;
           packages.typeably.source = inputs.typeably;
+          packages.type-level-show.source = inputs.type-level-show;
           devShell = nondevDevShell "ghc98";
         };
         haskellProjects.ghc96 = {
           basePackages = pkgs.haskell.packages.ghc96;
           packages.typeably.source = inputs.typeably;
+          packages.type-level-show.source = inputs.type-level-show;
           devShell.mkShellArgs.name = "ghc96-rerefined";
         };
         haskellProjects.ghc94 = {
           basePackages = pkgs.haskell.packages.ghc94;
           packages.typeably.source = inputs.typeably;
+          packages.type-level-show.source = inputs.type-level-show;
           devShell = nondevDevShell "ghc94";
         };
         haskellProjects.ghc92 = {
           basePackages = pkgs.haskell.packages.ghc92;
           packages.typeably.source = inputs.typeably;
+          packages.type-level-show.source = inputs.type-level-show;
           devShell = nondevDevShell "ghc92";
         };
       };

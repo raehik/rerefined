@@ -9,7 +9,9 @@ import GHC.TypeNats ( Natural, KnownNat, natVal' )
 
 -- | Compare value to a type-level 'Natural' using the given 'RelOp'.
 data CompareValue (op :: RelOp) (sign :: Sign) (n :: Natural)
-    deriving Predicate via Typeably (CompareValue op sign n)
+instance Predicate (CompareValue op sign n) where
+    type PredicateName d (CompareValue op sign n) = "Value TODO"
+    --deriving Predicate via Typeably (CompareValue op sign n)
 {- TODO consider custom predicateName. like
     @Value <= n@            instead of
     @CompareValue LTE n@

@@ -15,18 +15,23 @@ import Data.Kind ( type Constraint )
 
 -- | Compare length to a type-level 'Natural' using the given 'RelOp'.
 data CompareLength (op :: RelOp) (n :: Natural)
-    deriving Predicate via Typeably (CompareLength op n)
+instance Predicate (CompareLength op n) where
+    type PredicateName d (CompareLength op n) = "TODO"
 
 -- | Compare the length of a 'Foldable' to a type-level 'Natural' using the
 --   given 'RelOp'.
-instance (KnownNat n, Foldable f, ReifyRelOp op)
-  => Refine1 (CompareLength op n) f where
+instance
+  ( KnownNat n, Foldable f, ReifyRelOp op
+  , KnownSymbol (PredicateName 0 (CompareLength op n))
+  ) => Refine1 (CompareLength op n) f where
     validate1 p = validateCompareLength p . length
 
 -- | Compare the length of a 'MonoFoldable' to a type-level 'Natural' using the
 --   given 'RelOp'.
-instance (KnownNat n, MonoFoldable a, ReifyRelOp op)
-  => Refine (CompareLength op n) a where
+instance
+  ( KnownNat n, MonoFoldable a, ReifyRelOp op
+  , KnownSymbol (PredicateName 0 (CompareLength op n))
+  ) => Refine (CompareLength op n) a where
     validate p = validateCompareLength p . olength
 
 validateCompareLength

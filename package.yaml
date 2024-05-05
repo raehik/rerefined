@@ -67,6 +67,7 @@ dependencies:
 - text-builder-linear ^>= 0.1.2
 - text # TODO
 - ghc-prim # TODO for GHC.Types (for partial access to TypeRep types)
+- type-level-show # TODO
 
 library:
   source-dirs: src

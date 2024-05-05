@@ -1,11 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE UndecidableInstances #-} -- for PredicateName
 
 module Rerefined.Predicate.Logical where
 
 import Rerefined.Predicate.Common
 import Rerefined.Refined
 import Rerefined.Refine.Unsafe
+import TypeLevelShow.Utils
+import GHC.TypeLits ( Symbol )
 
 -- | Logical binary operator.
 --
@@ -13,31 +16,29 @@ import Rerefined.Refine.Unsafe
 -- one logical unary operator 'Not'.
 data LogicOp = And | Or | Nand | Nor | Xor | Xnor
 
+type family ShowLogicOp (op :: LogicOp) :: Symbol where
+    ShowLogicOp And  = "&&"
+    ShowLogicOp Or   = "||"
+    ShowLogicOp Nand = "!&"
+    ShowLogicOp Nor  = "!|"
+    ShowLogicOp Xor  = "^^"
+    ShowLogicOp Xnor = "!^"
+
 -- | A logical binary operation on two predicates.
 data Logical (op :: LogicOp) l r
 
-{-
--- TODO could do whatever we want here e.g. infix. (but idk what e.g. XNOR uses)
-instance (Predicate l, Predicate r, ReifyLogicOp op)
-  => Predicate (Logical op l r) where
-    predicateName _ d = tshowParen (d > 10) $
-           "Logical "
-        <> reifyLogicOpPretty @op <> tshowChar ' '
-        <> predicateName (proxy# @l) 11 <> tshowChar ' '
-        <> predicateName (proxy# @r) 11
--}
-
 -- | TODO making all ops pred 3. but || is infixr 2 in base. meh it's up to me,
 --   not really sure.
-instance (Predicate l, Predicate r, ReifyLogicOp' op)
-  => Predicate (Logical op l r) where
-    predicateName _ d = tshowParen (d > 3) $
-           predicateName (proxy# @l) 4 <> tshowChar ' '
-        <> reifyLogicOpPretty' @op     <> tshowChar ' '
-        <> predicateName (proxy# @r) 4
+instance (Predicate l, Predicate r) => Predicate (Logical op l r) where
+    type PredicateName d (Logical op l r) = ShowParen (d > 3)
+        (    PredicateName 4 l ++ ShowChar ' '
+          ++ ShowLogicOp op    ++ ShowChar ' '
+          ++ PredicateName 4 r )
 
-instance (Refine l a, Refine r a, ReifyLogicOp op, ReifyLogicOp' op)
-  => Refine (Logical op l r) a where
+instance
+  ( Refine l a, Refine r a, ReifyLogicOp op
+  , KnownSymbol (PredicateName 0 (Logical op l r))
+  ) => Refine (Logical op l r) a where
     validate p a =
         reifyLogicOp @op (validateFail p)
             (validate (proxy# @l) a)
@@ -45,7 +46,6 @@ instance (Refine l a, Refine r a, ReifyLogicOp op, ReifyLogicOp' op)
 
 -- | Reify a logical binary operator type tag.
 class ReifyLogicOp (op :: LogicOp) where
-    reifyLogicOpPretty :: IsString a => a
     reifyLogicOp
         :: (Builder -> [a] -> Maybe a)
         -> Maybe a
@@ -53,7 +53,6 @@ class ReifyLogicOp (op :: LogicOp) where
         -> Maybe a
 
 instance ReifyLogicOp And where
-    reifyLogicOpPretty = "And"
     reifyLogicOp fFail l r =
         case l of
           Nothing ->
@@ -66,7 +65,6 @@ instance ReifyLogicOp And where
               Just er -> fFail "AND:    l&r failed"    [el, er]
 
 instance ReifyLogicOp Or where
-    reifyLogicOpPretty = "Or"
     reifyLogicOp fFail l r =
         case l of
           Nothing -> Nothing
@@ -76,7 +74,6 @@ instance ReifyLogicOp Or where
               Just er -> fFail "OR:     l&r failed"    [el, er]
 
 instance ReifyLogicOp Nand where
-    reifyLogicOpPretty = "Nand"
     reifyLogicOp fFail l r =
         case l of
           Just _  -> Nothing
@@ -86,7 +83,6 @@ instance ReifyLogicOp Nand where
               Nothing -> fFail "NAND:   l&r succeeded" [      ]
 
 instance ReifyLogicOp Nor where
-    reifyLogicOpPretty = "Nor"
     reifyLogicOp fFail l r =
         case l of
           Just el ->
@@ -99,7 +95,6 @@ instance ReifyLogicOp Nor where
               Nothing -> fFail "NOR:    l&r succeeded" [      ]
 
 instance ReifyLogicOp Xor where
-    reifyLogicOpPretty = "Xor"
     reifyLogicOp fFail l r =
         case l of
           Nothing ->
@@ -112,7 +107,6 @@ instance ReifyLogicOp Xor where
               Just er -> fFail "XOR:    l&r failed"    [el, er]
 
 instance ReifyLogicOp Xnor where
-    reifyLogicOpPretty = "Xnor"
     reifyLogicOp fFail l r =
         case l of
           Nothing ->
@@ -127,9 +121,11 @@ instance ReifyLogicOp Xnor where
 data Not p
 
 instance Predicate p => Predicate (Not p) where
-    predicateName _ = predicateName1 @p "Not"
+    -- TODO not sure on precedence here
+    type PredicateName d (Not p) = ShowParen (d > 10) "¬ " ++ PredicateName 11 p
 
-instance Refine p a => Refine (Not p) a where
+instance (Refine p a, KnownSymbol (PredicateName 0 (Not p)))
+  => Refine (Not p) a where
     validate p a =
         case validate (proxy# @p) a of
           Just _  -> Nothing
@@ -148,24 +144,3 @@ rerefineDeMorgans2
     :: Refined (Not (Logical And l r))       a
     -> Refined (Logical Or  (Not l) (Not r)) a
 rerefineDeMorgans2 = unsafeRerefine
-
-class ReifyLogicOp' (op :: LogicOp) where
-    reifyLogicOpPretty' :: IsString a => a
-
-instance ReifyLogicOp' And where
-    reifyLogicOpPretty' = "&&"
-
-instance ReifyLogicOp' Or where
-    reifyLogicOpPretty' = "||"
-
-instance ReifyLogicOp' Nand where
-    reifyLogicOpPretty' = "!&"
-
-instance ReifyLogicOp' Nor where
-    reifyLogicOpPretty' = "!|"
-
-instance ReifyLogicOp' Xor where
-    reifyLogicOpPretty' = "^^"
-
-instance ReifyLogicOp' Xnor where
-    reifyLogicOpPretty' = "!^"
