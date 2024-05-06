@@ -10,6 +10,9 @@
   the predicate nicely and slots the value in!
   * hrmmmmm idk exactly how it'll look. maybe leave till later.
 
+## Predicates
+* `All ps`, `And` a list of predicates? My errors work for it. Seems fun.
+
 ## Predicate names: fixity
 I do precedence, but not associativity. Not sure how to. `Show` doesn't help.
 See: http://intrologic.stanford.edu/dictionary/operator_precedence.html

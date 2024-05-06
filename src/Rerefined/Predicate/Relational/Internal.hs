@@ -4,7 +4,6 @@
 
 module Rerefined.Predicate.Relational.Internal where
 
-import Rerefined.Predicate.Common
 import GHC.TypeNats
 import Data.Type.Ord ( OrdCond )
 import GHC.TypeLits ( Symbol )
@@ -25,51 +24,39 @@ data RelOp
   | GTE -- ^ '>='              equal to or greater than
   | GT' -- ^ '>'                           greater than
 
-type family ShowRelOp (op :: RelOp) :: Symbol where
-    ShowRelOp LT' = "<"
-    ShowRelOp LTE = "<="
-    ShowRelOp EQ' = "=="
-    ShowRelOp NEQ = "/="
-    ShowRelOp GTE = ">="
-    ShowRelOp GT' = ">"
-
 -- | Reify a relational operator type tag.
---
--- We stuff the 'Typeable' constraint in here because we need it for easy
--- 'Rerefined.Predicate.Predicate' instances, and we don't want to expose the
--- 'Typeable' constraint elsewhere.
-class Typeable op => ReifyRelOp (op :: RelOp) where
-    -- | The term-level relational operator that @op@ describes.
-    reifyRelOp :: forall a. (Num a, Ord a) => a -> a -> Bool
+class ReifyRelOp (op :: RelOp) where
+    -- | Pretty @op@.
+    type ShowRelOp op :: Symbol
 
-    -- | Pretty operator.
-    reifyRelOpPretty :: IsString a => a
+    -- | The term-level relational operator that @op@ describes.
+    reifyRelOp :: forall a. Ord a => a -> a -> Bool
 
 instance ReifyRelOp LT' where
+    type ShowRelOp LT' = "<"
     reifyRelOp = (<)
-    reifyRelOpPretty = "<"
 
 instance ReifyRelOp LTE where
+    type ShowRelOp LTE = "<="
     reifyRelOp = (<=)
-    reifyRelOpPretty = "<="
 
 instance ReifyRelOp EQ' where
+    type ShowRelOp EQ' = "=="
     reifyRelOp = (==)
-    reifyRelOpPretty = "=="
 
 instance ReifyRelOp NEQ where
+    type ShowRelOp NEQ = "/="
     reifyRelOp = (/=)
-    reifyRelOpPretty = "/="
 
 instance ReifyRelOp GTE where
+    type ShowRelOp GTE = ">="
     reifyRelOp = (>=)
-    reifyRelOpPretty = ">="
 
 instance ReifyRelOp GT' where
+    type ShowRelOp GT' = ">"
     reifyRelOp = (>)
-    reifyRelOpPretty = ">"
 
--- | Can we widen the given 'RelOp' from @n@ to @m@?
+-- | Can we widen the given 'RelOp' on the given 'Natural' from @n@ to @m@?
 type family WidenRelOp (op :: RelOp) (n :: Natural) (m :: Natural) where
     -- @n == m@? no problem
     WidenRelOp op  n n = True

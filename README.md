@@ -38,18 +38,11 @@ efficiently turned into a `String` in a single pass.
 See [refined#101](https://github.com/nikita-volkov/refined/issues/101).
 `Typeable` is useful, but the way it is used brings lots of `Typeable` contexts.
 
-rerefined has predicates declare their "predicate name" explicitly. You can
-still use `Typeable` for non-combinator predicates, where no `Typeable` contexts
-are incurred, but combinator predicates such as binary logical predicates
-require more work. However, you can use all the existing `ShowS` helpers (that's
-how `typeRep`s are printed anyway), so it's just like writing a manual `Show`
-instance! Plus, combinator predicates are fairly unusual, so library users will
-probably never see this.
-
-Note that this change also improves predicate name display, since `typeRep`
-tries to display inferred/hidden kinds for wrapped predicates in combinator
-predicates, which are uninteresting. We can ignore these in our manual
-instances!
+rerefined asks that you do a bit more work upfront, but gives you tools and
+grants much more power. Predicates declare their "predicate name" explicitly as
+a type-level `Symbol`. Precedence is supported and infix operators are welcomed.
+(For now, the logical operators primarily look like their propositional logic
+counterparts.)
 
 ### Cleaner design
 What do `LessThan`, `GreaterThan`, `EqualTo` etc. have in common? They're all

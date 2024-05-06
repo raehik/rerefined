@@ -10,4 +10,4 @@ import GHC.TypeNats
 --
 -- The operator must include the left and right spaces.
 type PredicateNameBOp op prec d l r = ShowParen (d > prec)
-    (PredicateName (d+1) l ++ op ++ PredicateName (d+1) r)
+    (PredicateName (prec+1) l ++ op ++ PredicateName (prec+1) r)

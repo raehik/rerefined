@@ -5,16 +5,14 @@ module Rerefined.Predicate.Logical.Not where
 
 import Rerefined.Predicate.Common
 import TypeLevelShow.Utils
-import GHC.TypeNats
 
 -- | Logical negation. Also NOT logic gate, or logical complement.
 data Not p
 
 -- | Precendence of 9 (one below function application).
 instance Predicate p => Predicate (Not p) where
-    -- TODO unsure about this
-    type PredicateName d (Not p) =
-        "¬ " ++ ShowParen (d > 9) (PredicateName (d+1) p)
+    type PredicateName d (Not p) = ShowParen (d > 9)
+        ("¬ " ++ PredicateName 10 p)
 
 instance (Refine p a, KnownPredicateName (Not p))
   => Refine (Not p) a where

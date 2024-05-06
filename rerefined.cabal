@@ -35,6 +35,7 @@ library
       Rerefined.Predicate.Common
       Rerefined.Predicate.Common.Binary
       Rerefined.Predicate.Fail
+      Rerefined.Predicate.Logical
       Rerefined.Predicate.Logical.And
       Rerefined.Predicate.Logical.If
       Rerefined.Predicate.Logical.Iff

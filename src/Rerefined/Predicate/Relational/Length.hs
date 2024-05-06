@@ -14,11 +14,13 @@ import GHC.TypeError
 import Data.Kind ( type Constraint )
 import TypeLevelShow.Utils
 import TypeLevelShow.Natural
+import Data.Text.Builder.Linear qualified as TBL
 
 -- | Compare length to a type-level 'Natural' using the given 'RelOp'.
 data CompareLength (op :: RelOp) (n :: Natural)
+
+-- | Precedence of 4 (matching base relational operators e.g. '>=').
 instance Predicate (CompareLength op n) where
-    -- TODO base relops are infix 4
     type PredicateName d (CompareLength op n) = ShowParen (d > 4)
         ("Length " ++ ShowRelOp op ++ ShowChar ' ' ++ ShowNatDec n)
 
@@ -44,9 +46,8 @@ validateCompareLength
        , KnownPredicateName (CompareLength op n)
     ) => Proxy# (CompareLength op n) -> Int -> Maybe RefineFailure
 validateCompareLength p len =
-    validateBool p ("length not "<>reifyRelOpPretty @op<>" ") -- TODO <>show n)
-        (reifyRelOp @op len (fromIntegral n))
-  where n = natVal' (proxy# @n)
+    validateBool p ("length: "<>TBL.fromDec n) (reifyRelOp @op len n)
+  where n = fromIntegral (natVal' (proxy# @n))
 
 -- | Widen a length comparison predicate.
 --
