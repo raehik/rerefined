@@ -12,8 +12,8 @@ module Rerefined.Predicates
   -- * Relational
   , CompareValue
   , Sign(..)
-  , RelOp(..)
   , CompareLength
+  , LTE, GTE
   ) where
 
 import Rerefined.Predicate.Succeed

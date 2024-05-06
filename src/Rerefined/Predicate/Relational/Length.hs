@@ -17,7 +17,7 @@ import TypeLevelShow.Natural
 import Data.Text.Builder.Linear qualified as TBL
 
 -- | Compare length to a type-level 'Natural' using the given 'RelOp'.
-data CompareLength (op :: RelOp) (n :: Natural)
+data CompareLength op (n :: Natural)
 
 -- | Precedence of 4 (matching base relational operators e.g. '>=').
 instance Predicate (CompareLength op n) where
@@ -82,8 +82,8 @@ widenCompareLength1
 widenCompareLength1 = unsafeRerefine1
 
 type WROE op n m = WROE' op n m (WidenRelOp op n m)
-type WROE' :: RelOp -> Natural -> Natural -> Bool -> Constraint
-type family WROE' (op :: RelOp) (n :: Natural) (m :: Natural) (b :: Bool) where
+type WROE' :: k -> Natural -> Natural -> Bool -> Constraint
+type family WROE' op n m b where
     WROE' op n m True  = ()
     WROE' op n m False = TypeError
       (      Text "can't widen relational equation "

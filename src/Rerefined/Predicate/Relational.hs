@@ -1,8 +1,8 @@
 module Rerefined.Predicate.Relational
   ( CompareValue
   , Sign(..)
-  , RelOp(..)
   , CompareLength
+  , LTE, GTE
   ) where
 
 import Rerefined.Predicate.Relational.Internal
