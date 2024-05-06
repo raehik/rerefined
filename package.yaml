@@ -61,12 +61,10 @@ ghc-options:
 
 dependencies:
 - base >= 4.16 && < 5
-- typeably ^>= 0.1.0
 - mono-traversable ^>= 1.0.17.0
 - template-haskell >= 2.19.0.0 && < 2.22
 - text-builder-linear ^>= 0.1.2
 - text # TODO
-- ghc-prim # TODO for GHC.Types (for partial access to TypeRep types)
 - type-level-show # TODO
 
 library:

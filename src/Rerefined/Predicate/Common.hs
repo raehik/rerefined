@@ -6,7 +6,6 @@ module Rerefined.Predicate.Common
   (
   -- * Re-exports
     module Rerefined.Predicate
-  , Typeably(..), Typeable
   , proxy#
   , TBL.Builder
   , IsString -- TODO remove
@@ -19,8 +18,6 @@ module Rerefined.Predicate.Common
 import Rerefined.Predicate
 import GHC.Exts ( Proxy#, proxy#, IsString(fromString) )
 import GHC.TypeLits ( KnownSymbol )
-import Data.Typeable.Typeably
-import Data.Typeable ( Typeable )
 import Data.Text.Builder.Linear qualified as TBL
 
 -- TODO maybe move to main 'Rerefined.Predicate' module

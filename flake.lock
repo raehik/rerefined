@@ -72,8 +72,7 @@
         "flake-parts": "flake-parts",
         "haskell-flake": "haskell-flake",
         "nixpkgs": "nixpkgs",
-        "type-level-show": "type-level-show",
-        "typeably": "typeably"
+        "type-level-show": "type-level-show"
       }
     },
     "type-level-show": {
@@ -89,22 +88,6 @@
       "original": {
         "owner": "raehik",
         "repo": "type-level-show",
-        "type": "github"
-      }
-    },
-    "typeably": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1713749511,
-        "narHash": "sha256-FVeGplCyndWPK/bNwZ6ryUTeJgntKswDfdwANC7YJik=",
-        "owner": "raehik",
-        "repo": "typeably",
-        "rev": "da7fed5b593d0d9f2c0be7dd83f4c324eba9e89b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "raehik",
-        "repo": "typeably",
         "type": "github"
       }
     }

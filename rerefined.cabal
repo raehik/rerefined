@@ -37,6 +37,7 @@ library
       Rerefined.Predicate.Fail
       Rerefined.Predicate.Logical
       Rerefined.Predicate.Logical.And
+      Rerefined.Predicate.Logical.Equivalences
       Rerefined.Predicate.Logical.If
       Rerefined.Predicate.Logical.Iff
       Rerefined.Predicate.Logical.Nand
@@ -72,11 +73,9 @@ library
   ghc-options: -Wall -Wno-unticked-promoted-constructors
   build-depends:
       base >=4.16 && <5
-    , ghc-prim
     , mono-traversable >=1.0.17.0 && <1.1
     , template-haskell >=2.19.0.0 && <2.22
     , text
     , text-builder-linear >=0.1.2 && <0.2
     , type-level-show
-    , typeably >=0.1.0 && <0.2
   default-language: GHC2021
