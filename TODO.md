@@ -1,17 +1,20 @@
 # rerefined to-dos
 * think about reassociation, other weird utils (refined actually provides lots)
-* think about strengthening and weakening. do want but the naming overlaps with
-  my strongweak library... maybe that's just life? not a massive issue
-* check the refined issue list, see if I have any outstanding
-  * on a glance no: added more reassociativity helpers, no aeson, removed
-    insidious Typeable constraints, added `Refined1`, (strongweak), removed
-    `These`
 * make a little `prettyRefined :: Show a => Refined p a -> String` that reifies
   the predicate nicely and slots the value in!
   * hrmmmmm idk exactly how it'll look. maybe leave till later.
 
 ## Predicates
 * `All ps`, `And` a list of predicates? My errors work for it. Seems fun.
+
+## Fancy stuff: Logical predicate normalization
+Seems awkward because we need to move between binary `kl -> kr -> Type` types,
+unary `k -> Type` types, and `k` types (non-logical predicates). I got started,
+but I might be going the wrong way.
+
+I think we can only do "our best"/a heuristic approach anyway, but something is
+better than nothing. I'd love to be able to "prove" that certain predicates are
+actually bottom, or top.
 
 ## Predicate names: fixity
 I do precedence, but not associativity. Not sure how to. `Show` doesn't help.

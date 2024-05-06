@@ -5,6 +5,8 @@ module Rerefined.Predicate.Logical.And where
 
 import Rerefined.Predicate.Common.Binary
 import Rerefined.Predicate.Common
+import Rerefined.Refine.Unsafe
+import Rerefined.Refined
 
 -- | Logical conjunction. Also AND logic gate.
 data And l r
@@ -28,3 +30,27 @@ instance (Refine l a, Refine r a, KnownPredicateName (And l r))
       where
         l = validate (proxy# @l) a
         r = validate (proxy# @r) a
+
+-- | Take just the left predicate from an 'And'.
+rerefineAndL :: Refined (And l r) a -> Refined l a
+rerefineAndL = unsafeRerefine
+
+-- | Take just the right predicate from an 'And'.
+rerefineAndR :: Refined (And l r) a -> Refined r a
+rerefineAndR = unsafeRerefine
+
+-- | Eliminate an 'And' by applying the left predicate, then the right.
+eliminateAndLR :: Refined (And l r) a -> Refined r (Refined l a)
+eliminateAndLR = unsafeRefine . rerefineAndL
+
+-- | Eliminate an 'And' by applying the right predicate, then the left.
+eliminateAndRL :: Refined (And l r) a -> Refined l (Refined r a)
+eliminateAndRL = unsafeRefine . rerefineAndR
+
+-- | Introduce an 'And' given a double-'Refined'. Inner is left.
+introduceAndLR :: Refined r (Refined l a) -> Refined (And l r) a
+introduceAndLR = unsafeRefine . unrefine . unrefine
+
+-- | Introduce an 'And' given a double-'Refined'. Inner is right.
+introduceAndRL :: Refined l (Refined r a) -> Refined (And l r) a
+introduceAndRL = unsafeRefine . unrefine . unrefine
