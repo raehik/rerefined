@@ -41,11 +41,11 @@ rerefineAndR = unsafeRerefine
 
 -- | Eliminate an 'And' by applying the left predicate, then the right.
 eliminateAndLR :: Refined (And l r) a -> Refined r (Refined l a)
-eliminateAndLR = unsafeRefine . rerefineAndL
+eliminateAndLR = unsafeRefine . unsafeRefine . unrefine
 
 -- | Eliminate an 'And' by applying the right predicate, then the left.
 eliminateAndRL :: Refined (And l r) a -> Refined l (Refined r a)
-eliminateAndRL = unsafeRefine . rerefineAndR
+eliminateAndRL = unsafeRefine . unsafeRefine . unrefine
 
 -- | Introduce an 'And' given a double-'Refined'. Inner is left.
 introduceAndLR :: Refined r (Refined l a) -> Refined (And l r) a
