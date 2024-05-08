@@ -1,5 +1,5 @@
 name: rerefined
-version: 0.2.0
+version: 0.3.0
 synopsis: Refinement types, again
 description: Please see README.md.
 extra-source-files:
@@ -60,12 +60,12 @@ ghc-options:
 - -Wno-unticked-promoted-constructors
 
 dependencies:
-- base >= 4.16 && < 5
+- base >= 4.17 && < 5
 - mono-traversable ^>= 1.0.17.0
 - template-haskell >= 2.19.0.0 && < 2.22
 - text-builder-linear ^>= 0.1.2
-- text # TODO
-- type-level-show # TODO
+- text >= 2.0 && < 2.2
+- type-level-show ^>= 0.1.0
 
 library:
   source-dirs: src

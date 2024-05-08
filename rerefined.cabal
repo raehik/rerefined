@@ -5,7 +5,7 @@ cabal-version: 1.12
 -- see: https://github.com/sol/hpack
 
 name:           rerefined
-version:        0.2.0
+version:        0.3.0
 synopsis:       Refinement types, again
 description:    Please see README.md.
 category:       Types, Data
@@ -72,10 +72,10 @@ library
       MagicHash
   ghc-options: -Wall -Wno-unticked-promoted-constructors
   build-depends:
-      base >=4.16 && <5
+      base >=4.17 && <5
     , mono-traversable >=1.0.17.0 && <1.1
     , template-haskell >=2.19.0.0 && <2.22
-    , text
+    , text >=2.0 && <2.2
     , text-builder-linear >=0.1.2 && <0.2
-    , type-level-show
+    , type-level-show >=0.1.0 && <0.2
   default-language: GHC2021
