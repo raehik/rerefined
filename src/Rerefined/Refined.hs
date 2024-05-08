@@ -19,7 +19,7 @@ import Language.Haskell.TH.Syntax ( Lift )
 
 -- | @a@ refined with predicate @p@.
 newtype Refined p a = Refined a
-    deriving stock (Lift, Show)
+    deriving stock (Lift, Eq, Ord, Show)
 
 -- | Strip the refinement from a 'Refined'.
 --
@@ -35,7 +35,7 @@ unrefine (Refined a) = a
 -- re-asserting its predicate, provided your changes are made without altering
 -- the structure/shape of @f@ (e.g. 'fmap', 'traverse').
 newtype Refined1 p f a = Refined1 (f a)
-    deriving stock (Functor, Foldable, Traversable, Lift, Show)
+    deriving stock (Functor, Foldable, Traversable, Lift, Eq, Ord, Show)
 
 -- | Strip the refinement from a 'Refined1'.
 --

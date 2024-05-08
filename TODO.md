@@ -1,5 +1,4 @@
 # rerefined to-dos
-* add `Eq Refined` instance. probably `Ord` too
 * add `Arbitrary Refined` instance. ohhh this looks like a pain :(
 * widen mono-traversable lower bound?
 * think about reassociation, other weird utils (refined actually provides lots)
