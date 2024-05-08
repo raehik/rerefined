@@ -10,7 +10,7 @@ import Rerefined.Predicate.Common
 --   equivalence (loosely).
 data Iff l r
 
--- | Precendence of 4 (matching '==').
+-- | Precedence of 4 (matching '==').
 instance (Predicate l, Predicate r) => Predicate (Iff l r) where
     type PredicateName d (Iff l r) = PredicateNameBOp " ↔ " 4 d l r
 

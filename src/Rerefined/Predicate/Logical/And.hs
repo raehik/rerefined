@@ -11,7 +11,7 @@ import Rerefined.Refined
 -- | Logical conjunction. Also AND logic gate.
 data And l r
 
--- | Precendence of 3 (matching 'Data.Bool.&&').
+-- | Precedence of 3 (matching 'Data.Bool.&&').
 instance (Predicate l, Predicate r) => Predicate (And l r) where
     type PredicateName d (And l r) = PredicateNameBOp " ∧ " 3 d l r
 

@@ -9,7 +9,7 @@ import Rerefined.Predicate.Common
 -- | Logical exclusive disjunction. Also XOR logic gate.
 data Xor l r
 
--- | Precendence of 4 (matching '==').
+-- | Precedence of 4 (matching '==').
 instance (Predicate l, Predicate r) => Predicate (Xor l r) where
     type PredicateName d (Xor l r) = PredicateNameBOp " ⊕ " 4 d l r
 

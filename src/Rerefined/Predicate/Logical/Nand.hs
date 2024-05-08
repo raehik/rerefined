@@ -9,7 +9,7 @@ import Rerefined.Predicate.Common
 -- | NAND logic gate. Also called the Sheffer stroke, or non-conjunction.
 data Nand l r
 
--- | Precendence of 3 (matching 'Data.Bool.&&').
+-- | Precedence of 3 (matching 'Data.Bool.&&').
 instance (Predicate l, Predicate r) => Predicate (Nand l r) where
     type PredicateName d (Nand l r) = PredicateNameBOp " ⊼ " 3 d l r
 

@@ -9,7 +9,7 @@ import Rerefined.Predicate.Common
 -- | Logical implication. "If l then r".
 data If l r
 
--- | Precendence of 4 (matching '==').
+-- | Precedence of 4 (matching '==').
 instance (Predicate l, Predicate r) => Predicate (If l r) where
     -- TODO double arrow? idk
     type PredicateName d (If l r) = PredicateNameBOp " → " 4 d l r

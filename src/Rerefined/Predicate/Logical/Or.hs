@@ -9,7 +9,7 @@ import Rerefined.Predicate.Common
 -- | Logical disjunction. Also OR logic gate.
 data Or l r
 
--- | Precendence of 2 (matching 'Data.Bool.||').
+-- | Precedence of 2 (matching 'Data.Bool.||').
 instance (Predicate l, Predicate r) => Predicate (Or l r) where
     type PredicateName d (Or l r) = PredicateNameBOp " ∨ " 2 d l r
 

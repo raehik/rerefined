@@ -9,7 +9,7 @@ import Rerefined.Predicate.Common
 -- | NOR logic gate. Also called non-disjunction, or joint denial.
 data Nor l r
 
--- | Precendence of 2 (matching 'Data.Bool.||').
+-- | Precedence of 2 (matching 'Data.Bool.||').
 instance (Predicate l, Predicate r) => Predicate (Nor l r) where
     type PredicateName d (Nor l r) = PredicateNameBOp " ⊽ " 2 d l r
 

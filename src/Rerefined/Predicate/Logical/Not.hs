@@ -9,7 +9,7 @@ import TypeLevelShow.Utils
 -- | Logical negation. Also NOT logic gate, or logical complement.
 data Not p
 
--- | Precendence of 9 (one below function application).
+-- | Precedence of 9 (one below function application).
 instance Predicate p => Predicate (Not p) where
     type PredicateName d (Not p) = ShowParen (d > 9)
         ("¬ " ++ PredicateName 10 p)
