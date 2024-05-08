@@ -8,20 +8,14 @@ module Rerefined.Predicate.Common
     module Rerefined.Predicate
   , proxy#
   , TBL.Builder
-  , IsString -- TODO remove
 
   -- * Predicate validation
   , validateFail, validateBool
-  , KnownPredicateName
   ) where
 
 import Rerefined.Predicate
 import GHC.Exts ( Proxy#, proxy#, IsString(fromString) )
-import GHC.TypeLits ( KnownSymbol )
 import Data.Text.Builder.Linear qualified as TBL
-
--- TODO maybe move to main 'Rerefined.Predicate' module
-type KnownPredicateName p = KnownSymbol (PredicateName 0 p)
 
 -- | Shortcut for returning a predicate validation failure.
 validateFail

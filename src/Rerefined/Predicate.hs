@@ -7,6 +7,7 @@ module Rerefined.Predicate
   , Refine1(validate1)
   , RefineFailure(..)
   , Predicate(..)
+  , KnownPredicateName
   , predicateName
   ) where
 
@@ -21,22 +22,16 @@ class Predicate p where
     -- Predicate names should aim to communicate the meaning of the predicate as
     -- clearly and concisely as possible.
     --
-    -- Consider using @type-level-show@ to build this. However, note that GHC
-    -- cannot figure out 'KnownSymbol' when there are type families in play, so
-    -- you may need to put 'KnownSymbol' constraints in instance contexts.
+    -- Consider using the package @type-level-show@ to build this.
     type PredicateName (d :: Natural) p :: Symbol
         -- ^ TODO d: the operator precedence of the enclosing context (a number
         --   from 0 to 11). Function application has precedence 10.
 
-{- TODO
-stuffing the KnownSymbol constraint into a Predicate superclass is handy, but
-then we have to handle it in combinator predicates. probably _not_ doing so is
-better, so I'm trying that first.
--}
+-- | Constraint for reifying a predicate name.
+type KnownPredicateName p = KnownSymbol (PredicateName 0 p)
 
--- | Reify predicate name.
-predicateName
-    :: forall p. (Predicate p, KnownSymbol (PredicateName 0 p)) => String
+-- | Reify predicate name to a 'String'.
+predicateName :: forall p. KnownPredicateName p => String
 predicateName = symbolVal' (proxy# @(PredicateName 0 p))
 
 -- | Refine @a@ with predicate @p@.

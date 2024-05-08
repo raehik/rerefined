@@ -1,4 +1,7 @@
 # rerefined to-dos
+* add `Eq Refined` instance. probably `Ord` too
+* add `Arbitrary Refined` instance. ohhh this looks like a pain :(
+* widen mono-traversable lower bound?
 * think about reassociation, other weird utils (refined actually provides lots)
 * make a little `prettyRefined :: Show a => Refined p a -> String` that reifies
   the predicate nicely and slots the value in!
