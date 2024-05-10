@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE AllowAmbiguousTypes #-} -- for predicate reification
 
 module Rerefined.Refine
   (
@@ -6,11 +7,13 @@ module Rerefined.Refine
     type Refined
   , refine
   , unrefine
+  , reifyPredicate
 
   -- * @Refined1@
   , type Refined1
   , refine1
   , unrefine1
+  , reifyPredicate1
 
   -- * Errors
   , type RefineFailure
@@ -33,8 +36,9 @@ refine a =
       Nothing -> Right (Refined a)
       Just e  -> Left e
 
--- reifyPredicate is just a weaker version of validate without proxy.
--- Maybe the latter is useful, though...?
+-- | Reify a predicate.
+reifyPredicate :: forall p a. Refine p a => a -> Bool
+reifyPredicate a = case refine @p a of Right{} -> True; Left{} -> False
 
 -- | Refine @f a@ with functor predicate @p@.
 refine1
@@ -44,6 +48,10 @@ refine1 fa =
     case validate1 (proxy# @p) fa of
       Nothing -> Right (Refined1 fa)
       Just e  -> Left e
+
+-- | Reify a functor predicate.
+reifyPredicate1 :: forall p f a. Refine1 p f => f a -> Bool
+reifyPredicate1 fa = case refine1 @p fa of Right{} -> True; Left{} -> False
 
 {- TODO
 * got an extra \n at start oops
