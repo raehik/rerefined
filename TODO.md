@@ -1,10 +1,12 @@
 # rerefined to-dos
-* add `Arbitrary Refined` instance. ohhh this looks like a pain :(
 * widen mono-traversable lower bound?
 * think about reassociation, other weird utils (refined actually provides lots)
 * make a little `prettyRefined :: Show a => Refined p a -> String` that reifies
   the predicate nicely and slots the value in!
   * hrmmmmm idk exactly how it'll look. maybe leave till later.
+* `Arbitrary` instances are nice and general but can fail; we could instead
+  write good quality ones for specific predicates. like `(Arbitrary (Refined l
+  a), Arbitrary (Refined r a)) => Arbitrary (Refined (And l r) a)`. idk tho
 
 ## Predicates
 * `All ps`, `And` a list of predicates? My errors work for it. Seems fun.
@@ -41,10 +43,6 @@ data E a = E { eName :: a, eInner :: [(a, E a)] }
 ```
 
 Perhaps the main question here is, what should the pretty error look like.
-
-## Strengthening & weakening
-* the `Weaken` type class should probably be implemented another way
-* start with relational ops
 
 ## Instances
 ### Avoid

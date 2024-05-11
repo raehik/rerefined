@@ -5,8 +5,7 @@ module Rerefined.Predicate.Logical.And where
 
 import Rerefined.Predicate.Common.Binary
 import Rerefined.Predicate.Common
-import Rerefined.Refine.Unsafe
-import Rerefined.Refined
+import Rerefined.Refine
 
 -- | Logical conjunction. Also AND logic gate.
 data And l r

@@ -61,11 +61,14 @@ ghc-options:
 
 dependencies:
 - base >= 4.17 && < 5
-- mono-traversable ^>= 1.0.17.0
-- template-haskell >= 2.19.0.0 && < 2.22
+- type-level-show ^>= 0.1.0
 - text-builder-linear ^>= 0.1.2
 - text >= 2.0 && < 2.2
-- type-level-show ^>= 0.1.0
+- template-haskell >= 2.19.0.0 && < 2.22
+- mono-traversable ^>= 1.0.17.0
+
+# instances
+- QuickCheck >= 2.14 && < 2.16
 
 library:
   source-dirs: src

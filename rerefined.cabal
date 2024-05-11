@@ -53,8 +53,6 @@ library
       Rerefined.Predicates
       Rerefined.Refine
       Rerefined.Refine.TH
-      Rerefined.Refine.Unsafe
-      Rerefined.Refined
   other-modules:
       Paths_rerefined
   hs-source-dirs:
@@ -72,7 +70,8 @@ library
       MagicHash
   ghc-options: -Wall -Wno-unticked-promoted-constructors
   build-depends:
-      base >=4.17 && <5
+      QuickCheck >=2.14 && <2.16
+    , base >=4.17 && <5
     , mono-traversable >=1.0.17.0 && <1.1
     , template-haskell >=2.19.0.0 && <2.22
     , text >=2.0 && <2.2

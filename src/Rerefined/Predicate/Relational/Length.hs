@@ -9,7 +9,7 @@ import GHC.TypeNats ( Natural, KnownNat, natVal' )
 import Data.MonoTraversable ( MonoFoldable(olength) )
 import GHC.Exts ( Proxy# )
 
-import Rerefined.Refine.Unsafe
+import Rerefined.Refine
 import GHC.TypeError
 import Data.Kind ( type Constraint )
 import TypeLevelShow.Utils
