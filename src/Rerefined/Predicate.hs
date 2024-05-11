@@ -31,6 +31,9 @@ class Predicate p where
 type KnownPredicateName p = KnownSymbol (PredicateName 0 p)
 
 -- | Reify predicate name to a 'String'.
+--
+-- Using this regrettably necessitates @UndecidableInstances@, due to the type
+-- family in the constraint. It sucks, but that's life.
 predicateName :: forall p. KnownPredicateName p => String
 predicateName = symbolVal' (proxy# @(PredicateName 0 p))
 

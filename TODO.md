@@ -1,4 +1,5 @@
 # rerefined to-dos
+* add tests
 * widen mono-traversable lower bound?
 * think about reassociation, other weird utils (refined actually provides lots)
 * make a little `prettyRefined :: Show a => Refined p a -> String` that reifies
@@ -7,6 +8,7 @@
 * `Arbitrary` instances are nice and general but can fail; we could instead
   write good quality ones for specific predicates. like `(Arbitrary (Refined l
   a), Arbitrary (Refined r a)) => Arbitrary (Refined (And l r) a)`. idk tho
+* provide infix operator-style predicates (that match the `PredicateName`s)
 
 ## Predicates
 * `All ps`, `And` a list of predicates? My errors work for it. Seems fun.
