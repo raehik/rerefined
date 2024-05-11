@@ -1,3 +1,8 @@
+## 0.4.0 (2024-05-11)
+* add `Eq`, `Ord`, `Arbitrary` instances
+* simplify modules (fewer)
+* add `reifyPredicate`, `reifyPredicate1` for reifying predicates to `a -> Bool`
+
 ## 0.3.0 (2024-05-07)
 * refactor predicate names: now handled with a sort of type-level `Show`. no
   `Typeable`, lots of custom prettiness (infix operators!)
