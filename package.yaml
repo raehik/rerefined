@@ -12,7 +12,6 @@ tested-with:
 - GHC==9.8
 - GHC==9.6
 - GHC==9.4
-# GHC 9.2 doesn't have GHC.TypeError, so cba for now
 
 github: raehik/rerefined
 maintainer: Ben Orchard <thefirstmuffinman@gmail.com>

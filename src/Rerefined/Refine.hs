@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE AllowAmbiguousTypes #-} -- for predicate reification
 {-# LANGUAGE UndecidableInstances #-} -- for KnownPredicateName in Arbitrary
 
