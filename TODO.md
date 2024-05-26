@@ -1,26 +1,26 @@
 # rerefined to-dos
 * add tests
 * widen mono-traversable lower bound?
+* clarify pretty predicates
+  * logical uses symbols from propositional logic because that's closest to what
+    they are (using boolean operators would make you think you're dealing with
+    booleans, which you aren't)
+  * but the operators are boolean because they have easily-accessible symbols...
+    lol
 * think about reassociation, other weird utils (refined actually provides lots)
 * make a little `prettyRefined :: Show a => Refined p a -> String` that reifies
   the predicate nicely and slots the value in!
   * hrmmmmm idk exactly how it'll look. maybe leave till later.
-* `Arbitrary` instances are nice and general but can fail; we could instead
-  write good quality ones for specific predicates. like `(Arbitrary (Refined l
-  a), Arbitrary (Refined r a)) => Arbitrary (Refined (And l r) a)`. idk tho
-* provide infix operator-style predicates (that match the `PredicateName`s)
 
 ## Predicates
 * `All ps`, `And` a list of predicates? My errors work for it. Seems fun.
 
-## Fancy stuff: Logical predicate normalization
-Seems awkward because we need to move between binary `kl -> kr -> Type` types,
-unary `k -> Type` types, and `k` types (non-logical predicates). I got started,
-but I might be going the wrong way.
-
-I think we can only do "our best"/a heuristic approach anyway, but something is
-better than nothing. I'd love to be able to "prove" that certain predicates are
-actually bottom, or top.
+## Predicate normalization
+I've got basic logical predicate normalization. It seems adding further
+normalization will be more complicated. Relational normalization seems to
+rely on inspecting logical predicates as well e.g. `(< n) && (> m) where n > m =
+_|_`. I'm fairly certain we have to take a heuristic approach, and I'm fairly
+happy with leaving this for a while.
 
 ## Predicate names: fixity
 I do precedence, but not associativity. Not sure how to. `Show` doesn't help.
@@ -50,15 +50,6 @@ Perhaps the main question here is, what should the pretty error look like.
 ### Avoid
 * I think the aeson instances for `Refined` aren't good... I might have a
   predicate that wants to alter JSON schema but now I have to re-newtype?
-
-## `Text` in failures
-`ShowS` is acceptable for short inputs-- but it's embedded in a larger string,
-and that string eventually must be printed. We are much better off using `Text`.
-
-The lovely #haskell folks pointed me to `text-builder-linear`. If I could write
-a `TypeRep` pretty printer in that, I may be able to use it. Otherwise, I can
-stick with `text-show` or `text-display`, which both use the lazy `Text`
-builder.
 
 ## Terminology
 * read papers

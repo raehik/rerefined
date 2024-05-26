@@ -32,7 +32,7 @@ recursive ADT, which is then pretty printed. This is unnecessary (even mentioned
 in the code).
 
 rerefined has a single-constructor error type which can be easily and
-efficiently turned into a `String` in a single pass.
+efficiently turned into a string-like in a single pass.
 
 ### No insidious `Typeable` contexts
 See [refined#101](https://github.com/nikita-volkov/refined/issues/101).
