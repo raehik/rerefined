@@ -1,3 +1,7 @@
+## 0.5.0 (2024-05-26)
+* add tentative operator versions of predicates
+* clear up WIP normalization story
+
 ## 0.4.0 (2024-05-11)
 * add `Eq`, `Ord`, `Arbitrary` instances
 * simplify modules (fewer)
