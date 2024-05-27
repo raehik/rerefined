@@ -74,7 +74,7 @@ library
       QuickCheck >=2.14 && <2.16
     , base >=4.18 && <5
     , mono-traversable >=1.0.17.0 && <1.1
-    , template-haskell >=2.19.0.0 && <2.22
+    , template-haskell >=2.19.0.0 && <2.23
     , text >=2.0 && <2.2
     , text-builder-linear >=0.1.2 && <0.2
     , type-level-show >=0.2.1 && <0.3
