@@ -59,7 +59,7 @@ ghc-options:
 
 dependencies:
 - base >= 4.18 && < 5
-- type-level-show ^>= 0.2.1
+- type-level-show >= 0.2.1 && < 0.4
 - text-builder-linear ^>= 0.1.2
 - text >= 2.0 && < 2.2
 - template-haskell >= 2.19.0.0 && < 2.23

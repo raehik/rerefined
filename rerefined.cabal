@@ -77,5 +77,5 @@ library
     , template-haskell >=2.19.0.0 && <2.23
     , text >=2.0 && <2.2
     , text-builder-linear >=0.1.2 && <0.2
-    , type-level-show >=0.2.1 && <0.3
+    , type-level-show >=0.2.1 && <0.4
   default-language: GHC2021
