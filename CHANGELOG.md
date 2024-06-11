@@ -1,3 +1,6 @@
+## 0.5.1 (2024-06-11)
+* add `Via` predicate
+
 ## 0.5.0 (2024-05-26)
 * add tentative operator versions of predicates
 * clear up WIP normalization story
