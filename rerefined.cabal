@@ -50,6 +50,7 @@ library
       Rerefined.Predicate.Relational.Length
       Rerefined.Predicate.Relational.Value
       Rerefined.Predicate.Succeed
+      Rerefined.Predicate.Via
       Rerefined.Predicates
       Rerefined.Predicates.Operators
       Rerefined.Refine

@@ -5,6 +5,7 @@ module Rerefined.Predicates
   -- * Base
     Succeed
   , Fail
+  , Via, validateVia
 
   -- * Logical
   , And, Iff, If, Nand, Nor, Not, Or, Xor
@@ -18,5 +19,6 @@ module Rerefined.Predicates
 
 import Rerefined.Predicate.Succeed
 import Rerefined.Predicate.Fail
+import Rerefined.Predicate.Via
 import Rerefined.Predicate.Logical
 import Rerefined.Predicate.Relational
