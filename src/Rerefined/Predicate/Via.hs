@@ -29,6 +29,9 @@ Note that you may not use @DerivingVia@ because it only works on the last
 parameter of a multi-parameter type class, and I don't want to switch the order
 of the 'Refine' parameters. (Even if I did, @DerivingVia@ isn't much different
 to or easier than this.)
+
+This predicate should not be used directly. Doing so will confuse your failure
+messages-- and accomplish very little, since you could simply be using @pVia@.
 -}
 data Via pVia p
 
@@ -51,6 +54,12 @@ instance (Refine pVia a, Predicate p, KnownPredicateName p)
 -- @
 -- 'validate' = 'validateVia' \@pVia
 -- @
+--
+-- Failures will record the name of @p@, followed by the @pVia@ failure
+-- (together with its name). That is, we don't actually print the @'Via' pVia p@
+-- name. (We're able to do this because filling out the
+-- 'refineFailurePredicate' is left up to 'validate', instead of being handled
+-- automatically. So think twice before changing that!)
 validateVia
     :: forall pVia p a
     .  (Refine pVia a, Predicate p, KnownPredicateName p)

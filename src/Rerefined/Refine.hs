@@ -49,7 +49,7 @@ unrefine (Refined a) = a
 --
 -- We may derive legal 'Functor', 'Traversable' instances for this as
 -- 'Rerefined.Predicate.Refine1' guarantees that the predicate only applies to
--- the functor structure. That is, you _may_ alter a 'Refined1' without
+-- the functor structure. That is, you /may/ alter a 'Refined1' without
 -- re-asserting its predicate, provided your changes are made without altering
 -- the structure/shape of @f@ (e.g. 'fmap', 'traverse').
 newtype Refined1 p f a = Refined1 (f a)
@@ -80,7 +80,8 @@ refine a =
 unsafeRefine :: a -> Refined p a
 unsafeRefine = Refined
 
--- | Replace a 'Refined''s predicate without validating the new prdicate @pNew@.
+-- | Replace a 'Refined''s predicate without validating the new predicate
+--   @pNew@.
 --
 -- Unsafe. Use only when you can manually prove that the new predicate holds.
 unsafeRerefine :: forall pNew pOld a. Refined pOld a -> Refined pNew a
@@ -105,7 +106,7 @@ refine1 fa =
 unsafeRefine1 :: f a -> Refined1 p f a
 unsafeRefine1 = Refined1
 
--- | Replace a 'Refined1''s predicate without validating the new prdicate
+-- | Replace a 'Refined1''s predicate without validating the new predicate
 --   @pNew@.
 --
 -- Unsafe. Use only when you can manually prove that the new predicate holds.

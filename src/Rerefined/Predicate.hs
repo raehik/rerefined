@@ -38,6 +38,16 @@ predicateName :: forall p. KnownPredicateName p => String
 predicateName = symbolVal' (proxy# @(PredicateName 0 p))
 
 -- | Refine @a@ with predicate @p@.
+--
+-- Note that 'validate' implementations decide what failure information is
+-- emitted. They don't even have to emit their own predicate name, even though
+-- 'Predicate' is in the context. This is useful in certain cases such as
+-- "Rerefined.Predicate.Via".
+--
+-- That does mean that the 'Predicate' context may not be used occasionally. But
+-- it's very useful, since otherwise combinator predicates have to constantly
+-- state @(Refine p a, Predicate p)@, and all predicates should have a pretty
+-- name even if it doesn't get printed under normal circumstances.
 class Predicate p => Refine p a where
     -- | Validate predicate @p@ for the given @a@.
     --
