@@ -30,8 +30,6 @@ validateFail _p msg es =
 validateBool
     :: forall p
     .  (Predicate p, KnownPredicateName p)
-    => Proxy# p -> TBL.Builder -> Bool
+    => Proxy# p -> Bool -> TBL.Builder
     -> Maybe RefineFailure
-validateBool p e = \case
-  True  -> Nothing
-  False -> validateFail p e []
+validateBool p b msg = case b of True -> Nothing; False -> validateFail p msg []

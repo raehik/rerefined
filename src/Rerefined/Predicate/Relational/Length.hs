@@ -46,7 +46,7 @@ validateCompareLength
        , KnownPredicateName (CompareLength op n)
     ) => Proxy# (CompareLength op n) -> Int -> Maybe RefineFailure
 validateCompareLength p len =
-    validateBool p ("length: "<>TBL.fromDec n) (reifyRelOp @op len n)
+    validateBool p (reifyRelOp @op len n) $ "length: "<>TBL.fromDec n
   where n = fromIntegral (natVal' (proxy# @n))
 
 -- | Widen a length comparison predicate.

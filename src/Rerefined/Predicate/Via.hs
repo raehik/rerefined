@@ -18,21 +18,25 @@ in failures.
 'Via' assists in doing this. Implement your 'Predicate' instance as normal, then
 implement 'Refine' with:
 
-    'validate' = 'validateVia' \@pVia
+@
+'validate' = 'validateVia' \@pVia
+@
 
 Now when this predicate fails, it will print the @pVia@ failure with a wrapper
-stating the name of the original predicate.
+stating the name of the original predicate @p@.
 
 Note that you may not use @DerivingVia@ because it only works on the last
 parameter of a multi-parameter type class, and I don't want to switch the order
-of the 'Refine' parameters. Even if I did, @DerivingVia@ isn't much different to
-or easier than this.
+of the 'Refine' parameters. (Even if I did, @DerivingVia@ isn't much different
+to or easier than this.)
 -}
 data Via pVia p
+
 instance (Predicate p, Predicate pVia)
   => Predicate (Via pVia p) where
     type PredicateName d (Via pVia p) = ShowParen (d > 9)
         ("Via " ++ PredicateName 10 p ++ " " ++ PredicateName 10 pVia)
+
 instance (Refine pVia a, Predicate p, KnownPredicateName p)
   => Refine (Via pVia p) a where
     validate _p a =
@@ -40,6 +44,13 @@ instance (Refine pVia a, Predicate p, KnownPredicateName p)
           Nothing -> Nothing
           Just e  -> validateFail (proxy# @p) "via" [e]
 
+-- | Implement 'validate' for predicate @p@ via @pVia@.
+--
+-- Use this with visible type applications:
+--
+-- @
+-- 'validate' = 'validateVia' \@pVia
+-- @
 validateVia
     :: forall pVia p a
     .  (Refine pVia a, Predicate p, KnownPredicateName p)

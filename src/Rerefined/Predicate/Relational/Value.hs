@@ -27,10 +27,8 @@ instance
   ) => Refine (CompareValue op sign n) a where
     -- note that we show the reified 'Natural' rather than the coerced numeric
     -- type, as otherwise we'd need a @'Show' a@
-    validate p a =
-        validateBool p
-            ("bad value")
-            (reifyRelOp @op a (reifySignedNat @sign @n))
+    validate p a = validateBool p (reifyRelOp @op a (reifySignedNat @sign @n)) $
+        "bad value"
 
 data Sign = Pos | Neg
 
