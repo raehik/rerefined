@@ -9,6 +9,8 @@ import Language.Haskell.TH.Syntax qualified as TH
 import Data.Text qualified as Text
 
 -- | Refine @a@ with predicate @p@ at compile time via Template Haskell.
+--
+-- Use like @$$('refineTH' \@p a)@.
 refineTH
     :: forall p a m
     .  (Refine p a, TH.Lift a, TH.Quote m, MonadFail m)
@@ -18,6 +20,8 @@ refineTH = either refineTHFail TH.liftTyped . refine @p @a
 
 -- | Refine @f a@ with functor predicate @p@ at compile time via Template
 --   Haskell.
+--
+-- Use like @$$('refine1TH' \@p a)@.
 refine1TH
     :: forall p f a m
     .  (Refine1 p f, TH.Lift (f a), TH.Quote m, MonadFail m)
