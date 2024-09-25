@@ -8,16 +8,11 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     haskell-flake.url = "github:srid/haskell-flake";
-    type-level-show.url   = "github:raehik/type-level-show";
-    type-level-show.flake = false;
-    singleraeh.url   = "github:raehik/singleraeh";
-    singleraeh.flake = false;
   };
   outputs = inputs:
   let
-    # simple devshell for non-dev compilers: really just want `cabal repl`
-    nondevDevShell = compiler: {
-      mkShellArgs.name = "${compiler}-rerefined";
+    defDevShell = compiler: {
+      mkShellArgs.name = "${compiler}";
       hoogle = false;
       tools = _: {
         hlint = null;
@@ -30,25 +25,20 @@
       systems = inputs.nixpkgs.lib.systems.flakeExposed;
       imports = [ inputs.haskell-flake.flakeModule ];
       perSystem = { self', pkgs, config, ... }: {
-        packages.default  = self'.packages.ghc96-rerefined;
-        devShells.default = self'.devShells.ghc96;
+        packages.default  = self'.packages.ghc98-rerefined;
+        devShells.default = self'.devShells.ghc98;
+        haskellProjects.ghc910 = {
+          basePackages = pkgs.haskell.packages.ghc910;
+          settings.defun-core.jailbreak = true;
+          devShell = defDevShell "ghc910";
+        };
         haskellProjects.ghc98 = {
           basePackages = pkgs.haskell.packages.ghc98;
-          packages.type-level-show.source = inputs.type-level-show;
-          packages.singleraeh.source = inputs.singleraeh;
-          devShell = nondevDevShell "ghc98";
+          devShell = defDevShell "ghc98";
         };
         haskellProjects.ghc96 = {
           basePackages = pkgs.haskell.packages.ghc96;
-          packages.type-level-show.source = inputs.type-level-show;
-          packages.singleraeh.source = inputs.singleraeh;
-          devShell.mkShellArgs.name = "ghc96-rerefined";
-        };
-        haskellProjects.ghc94 = {
-          basePackages = pkgs.haskell.packages.ghc94;
-          packages.type-level-show.source = inputs.type-level-show;
-          packages.singleraeh.source = inputs.singleraeh;
-          devShell = nondevDevShell "ghc94";
+          devShell = defDevShell "ghc96";
         };
       };
     };
