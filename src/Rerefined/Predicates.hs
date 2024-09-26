@@ -5,7 +5,7 @@ module Rerefined.Predicates
   -- * Base
     Succeed
   , Fail
-  , Via, validateVia
+  , validateVia
 
   -- * Logical
   , And, Iff, If, Nand, Nor, Not, Or, Xor

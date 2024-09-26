@@ -1,4 +1,5 @@
 ## Unreleased
+* remove `Via` predicate, only need `validateVia`
 * swap `validateBool` args
 
 ## 0.5.1 (2024-06-11)
