@@ -29,8 +29,10 @@
         devShells.default = self'.devShells.ghc98;
         haskellProjects.ghc910 = {
           basePackages = pkgs.haskell.packages.ghc910;
-          settings.defun-core.jailbreak = true;
           devShell = defDevShell "ghc910";
+
+          # https://github.com/phadej/defun/pull/5
+          settings.defun-core.jailbreak = true;
         };
         haskellProjects.ghc98 = {
           basePackages = pkgs.haskell.packages.ghc98;
