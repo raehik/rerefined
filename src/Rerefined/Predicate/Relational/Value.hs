@@ -12,7 +12,7 @@ import TypeLevelShow.Natural
 import GHC.TypeLits ( Symbol )
 
 -- | Compare value to a type-level 'Natural' using the given 'RelOp'.
-data CompareValue op (sign :: Sign) (n :: Natural)
+data CompareValue (op :: RelOp) (sign :: Sign) (n :: Natural)
 
 -- | Precedence of 4 (matching base relational operators e.g. '>=').
 instance Predicate (CompareValue op sign n) where
