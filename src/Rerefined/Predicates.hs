@@ -11,10 +11,10 @@ module Rerefined.Predicates
   , And, Iff, If, Nand, Nor, Not, Or, Xor
 
   -- * Relational
+  , RelOp(..)
   , CompareValue
   , Sign(..)
   , CompareLength
-  , LTE, GTE
   ) where
 
 import Rerefined.Predicate.Succeed

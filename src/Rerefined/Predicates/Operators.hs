@@ -59,9 +59,9 @@ infixr 4 .->
 type (.->) = If
 
 infix 4 .<, .<=, .==, ./=, .>=, .>
-type (.<)  = LT
-type (.<=) = LTE
-type (.==) =  EQ
-type (./=) = NEQ
-type (.>=) = GTE
-type (.>)  = GT
+type (.<)  = RelOpLT
+type (.<=) = RelOpLTE
+type (.==) = RelOpEQ
+type (./=) = RelOpNEQ
+type (.>=) = RelOpGTE
+type (.>)  = RelOpGT
