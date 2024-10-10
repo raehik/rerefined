@@ -40,11 +40,9 @@ library
       Rerefined.Predicate.Logical.Iff
       Rerefined.Predicate.Logical.Nand
       Rerefined.Predicate.Logical.Nor
-      Rerefined.Predicate.Logical.Normalize
       Rerefined.Predicate.Logical.Not
       Rerefined.Predicate.Logical.Or
       Rerefined.Predicate.Logical.Xor
-      Rerefined.Predicate.Normalize
       Rerefined.Predicate.Relational
       Rerefined.Predicate.Relational.Internal
       Rerefined.Predicate.Relational.Length
@@ -55,6 +53,7 @@ library
       Rerefined.Predicates.Operators
       Rerefined.Refine
       Rerefined.Refine.TH
+      Rerefined.Simplify
   other-modules:
       Paths_rerefined
   hs-source-dirs:
