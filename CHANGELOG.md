@@ -1,3 +1,7 @@
+## 0.7.0 (unreleased)
+* add predicate simplifier at `Rerefined.Simplify`
+  * old "normalizer" stuff removed
+
 ## 0.6.0 (2024-10-01)
 * remove `Via` predicate, only need `validateVia`
 * swap `validateBool` args
