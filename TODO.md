@@ -15,13 +15,6 @@
 ## Predicates
 * `All ps`, `And` a list of predicates? My errors work for it. Seems fun.
 
-## Predicate normalization
-I've got basic logical predicate normalization. It seems adding further
-normalization will be more complicated. Relational normalization seems to
-rely on inspecting logical predicates as well e.g. `(< n) && (> m) where n > m =
-_|_`. I'm fairly certain we have to take a heuristic approach, and I'm fairly
-happy with leaving this for a while.
-
 ## Predicate names: fixity
 I do precedence, but not associativity. Not sure how to. `Show` doesn't help.
 See: http://intrologic.stanford.edu/dictionary/operator_precedence.html
