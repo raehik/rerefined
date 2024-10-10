@@ -12,8 +12,8 @@ jobs:
         ghc: [ghc98, ghc910]
     runs-on: ubuntu-latest
     permissions:
-      id-token: "write"
-      contents: "read"
+      id-token: write # ? requested by magic-nix-cache
+      contents: read  # ? requested by magic-nix-cache
     steps:
     - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@main
