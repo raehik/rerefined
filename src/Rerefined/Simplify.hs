@@ -14,10 +14,14 @@ See 'Rerefined.Simplify.Core' (internal module) for more details.
 module Rerefined.Simplify
   ( Simplify
   , TrySimplify
-  , SimplifyStep
+  , AssertSimplified
   ) where
 
 import Rerefined.Simplify.Core ( SimplifyStep )
+
+import Data.Kind ( type Constraint )
+import GHC.TypeError ( type TypeError, type ErrorMessage(..) )
+import Rerefined.Predicate ( type PredicateName )
 
 -- | Simplify the given predicate.
 --
@@ -47,3 +51,15 @@ type family TrySimplifyLoop p mp where
 
     -- couldn't simplify
     TrySimplifyLoop p Nothing   = Nothing
+
+type AssertSimplified p = AssertSimplified' p (TrySimplify p)
+
+-- | Assert that a predicate may not be trivially simplified.
+--
+-- Returns the empty constraint on success, else emits a pretty type error.
+type family AssertSimplified' p mp' :: Constraint where
+    AssertSimplified' p Nothing   = ()
+    AssertSimplified' p (Just p') = TypeError
+        (    Text "Predicate is trivially simplifiable"
+        :$$: Text "   " :<>: Text (PredicateName 0 p)
+        :$$: Text "-> " :<>: Text (PredicateName 0 p') )
