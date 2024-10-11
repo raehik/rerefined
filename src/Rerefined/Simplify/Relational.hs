@@ -1,5 +1,13 @@
 {-# LANGUAGE UndecidableInstances #-}
 
+{- | Relational predicate simplification.
+
+These bits aren't mutually recursive with the main simplifier, so we can keep
+them separate for a bit of code hygiene.
+
+__Internal module. Exports may change without warning. Try not to use.__
+-}
+
 module Rerefined.Simplify.Relational where
 
 import Rerefined.Predicate.Succeed

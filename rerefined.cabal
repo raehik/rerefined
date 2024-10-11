@@ -54,6 +54,7 @@ library
       Rerefined.Refine
       Rerefined.Refine.TH
       Rerefined.Simplify
+      Rerefined.Simplify.Core
       Rerefined.Simplify.Relational
   other-modules:
       Paths_rerefined
