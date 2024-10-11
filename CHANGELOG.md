@@ -1,4 +1,4 @@
-## 0.7.0 (unreleased)
+## 0.7.0 (2024-10-11)
 * add predicate simplifier at `Rerefined.Simplify`
   * old "normalizer" stuff removed
 

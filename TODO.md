@@ -12,6 +12,9 @@
   the predicate nicely and slots the value in!
   * hrmmmmm idk exactly how it'll look. maybe leave till later.
 
+## Simplifier
+Really need to write a bunch of tests. See Symparsec for type-spec example.
+
 ## Predicates
 * `All ps`, `And` a list of predicates? My errors work for it. Seems fun.
 
