@@ -81,3 +81,34 @@ library
     , text-builder-linear >=0.1.2 && <0.2
     , type-level-show >=0.2.1 && <0.4
   default-language: GHC2021
+
+test-suite spec
+  type: exitcode-stdio-1.0
+  main-is: Main.hs
+  other-modules:
+      Paths_rerefined
+  hs-source-dirs:
+      test
+  default-extensions:
+      LambdaCase
+      NoStarIsType
+      DerivingVia
+      DeriveAnyClass
+      GADTs
+      RoleAnnotations
+      DefaultSignatures
+      TypeFamilies
+      DataKinds
+      MagicHash
+  ghc-options: -Wall -Wno-unticked-promoted-constructors
+  build-depends:
+      QuickCheck >=2.14 && <2.16
+    , base >=4.18 && <5
+    , mono-traversable >=1.0.17.0 && <1.1
+    , rerefined
+    , template-haskell >=2.19.0.0 && <2.23
+    , text >=2.0 && <2.2
+    , text-builder-linear >=0.1.2 && <0.2
+    , type-level-show >=0.2.1 && <0.4
+    , type-spec >=0.4.0.0 && <0.5
+  default-language: GHC2021
