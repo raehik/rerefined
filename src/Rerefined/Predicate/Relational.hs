@@ -3,6 +3,8 @@ module Rerefined.Predicate.Relational
   , CompareValue
   , Sign(..)
   , CompareLength
+  , WidenRelOp
+  , FlipRelOp
   ) where
 
 import Rerefined.Predicate.Relational.Internal

@@ -22,10 +22,10 @@ can't restrict relational operators to a given kind, and we have to handle
 non-standard orderings like @'GT' OR 'LT'@.
 -}
 data RelOp
-  = RelOpLT  -- ^ @<@  less than
-  | RelOpLTE -- ^ @<=@ less than or equal to
-  | RelOpEQ  -- ^ @==@              equal to
+  = RelOpEQ  -- ^ @==@              equal to
   | RelOpNEQ -- ^ @/=@ less than             or greater than (also not equal to)
+  | RelOpLT  -- ^ @<@  less than
+  | RelOpLTE -- ^ @<=@ less than or equal to
   | RelOpGTE -- ^ @>=@              equal to or greater than
   | RelOpGT  -- ^ @>@                           greater than
 
@@ -75,3 +75,13 @@ type family WidenRelOp op n m where
 
     -- can't widen (==) or (/=)
     WidenRelOp op n m = False
+
+-- | Flip a 'RelOp' to give the opposite comparison.
+type FlipRelOp :: RelOp -> RelOp
+type family FlipRelOp op where
+    FlipRelOp RelOpEQ  = RelOpNEQ
+    FlipRelOp RelOpNEQ = RelOpEQ
+    FlipRelOp RelOpLT  = RelOpGTE
+    FlipRelOp RelOpLTE = RelOpGT
+    FlipRelOp RelOpGTE = RelOpLT
+    FlipRelOp RelOpGT  = RelOpLTE
