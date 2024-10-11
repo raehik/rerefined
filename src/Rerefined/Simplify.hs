@@ -21,7 +21,7 @@ Implementation pitfalls:
 
 module Rerefined.Simplify
   ( Simplify
-  , Simplify'
+  , SimplifyStep
   ) where
 
 import Rerefined.Predicate.Succeed
@@ -29,32 +29,47 @@ import Rerefined.Predicate.Fail
 
 import Rerefined.Predicate.Logical
 
-import Rerefined.Predicate.Relational
-import GHC.TypeNats ( Natural, CmpNat )
-import Data.Type.Ord ( OrdCond )
+import Rerefined.Predicate.Relational ( CompareLength, FlipRelOp )
+import Rerefined.Simplify.Relational
+  ( SimplifyCompareLength
+  , SimplifyCompareLengthAnd
+  , SimplifyCompareLengthOr
+  )
+
+import Data.Kind ( Type )
+
+-- note that we can't modularize logical simplifications because they're
+-- mutually recursive with the main simplifier
 
 -- | Simplify the given predicate.
 --
 -- Returns the input predicate if we were unable to simplify.
-type Simplify p = FromMaybe p (Simplify' p)
+type Simplify :: Type -> Type
+type Simplify p = Simplify' p
 
--- | Promoted 'Data.Maybe.fromMaybe'.
-type family FromMaybe a ma where
-    FromMaybe a Nothing   = a
-    FromMaybe a (Just a') = a'
+-- | Helper definition for reducing duplication.
+type Simplify' p = SimplifyLoop p (SimplifyStep p)
 
--- | Try to simplify the given predicate.
+-- | Simplification loop.
+type family SimplifyLoop p mp where
+    -- simplification step succeeded: try again on the simplified predicate
+    SimplifyLoop p (Just p') = Simplify' p'
+
+    -- failed to simplify: give up, return the latest predicate
+    SimplifyLoop p Nothing   = p
+
+-- | Try to perform a single simplification step on the given predicate.
 --
 -- Returns 'Nothing' if we were unable to simplify.
-type family Simplify' p where
-    Simplify' (And  l r) = SimplifyAnd  l r
-    Simplify' (Or   l r) = SimplifyOr   l r
-    Simplify' (Nand l r) = SimplifyNand l r
-    Simplify' (Not  p)   = SimplifyNot  p
+type family SimplifyStep p where
+    SimplifyStep (And  l r) = SimplifyAnd  l r
+    SimplifyStep (Or   l r) = SimplifyOr   l r
+    SimplifyStep (Nand l r) = SimplifyNand l r
+    SimplifyStep (Not  p)   = SimplifyNot  p
 
-    Simplify' (CompareLength op n) = SimplifyCompareLength op n
+    SimplifyStep (CompareLength op n) = SimplifyCompareLength op n
 
-    Simplify' p = Nothing
+    SimplifyStep p = Nothing
 
 type family SimplifyAnd l r where
     -- identity laws
@@ -74,8 +89,8 @@ type family SimplifyAnd l r where
 
     -- recurse
     SimplifyAnd l r =
-        (OrElseAndL r (Simplify' l)
-            (OrElseAndR l (Simplify' r)
+        (OrElseAndL r (SimplifyStep l)
+            (OrElseAndR l (SimplifyStep r)
                 Nothing))
 
 type family OrElseAndL r mp cont where
@@ -104,8 +119,8 @@ type family SimplifyOr l r where
 
     -- recurse
     SimplifyOr l r =
-        (OrElseOrL r (Simplify' l)
-            (OrElseOrR l (Simplify' r)
+        (OrElseOrL r (SimplifyStep l)
+            (OrElseOrR l (SimplifyStep r)
                 Nothing))
 
 type family OrElseOrL r mp cont where
@@ -116,53 +131,14 @@ type family OrElseOrR l mp cont where
     OrElseOrR l Nothing   cont = cont
     OrElseOrR l (Just r') cont = Just (Or l r')
 
-type family SimplifyCompareLength (op :: RelOp) (n :: Natural) where
-    SimplifyCompareLength RelOpLT  0 = Just Fail
-    SimplifyCompareLength RelOpLTE 0 = Just (CompareLength RelOpEQ 0)
-
-    -- TODO I think that's it for single relational predicates.
-    SimplifyCompareLength op n = Nothing
-
-type family SimplifyCompareLengthAnd
-  (lop :: RelOp) (ln :: Natural) (rop :: RelOp) (rn :: Natural) where
-    -- @<n AND >m@: @n<=m@ -> False
-    SimplifyCompareLengthAnd RelOpLT  n RelOpGT  m =
-        OrdCond (CmpNat n m)
-            (Just Fail)
-            (Just Fail)
-            Nothing
-    SimplifyCompareLengthAnd RelOpGT  m RelOpLT  n =
-        OrdCond (CmpNat n m)
-            (Just Fail)
-            (Just Fail)
-            Nothing
-
-    SimplifyCompareLengthAnd lop ln rop rn = Nothing
-
-type family SimplifyCompareLengthOr
-  (lop :: RelOp) (ln :: Natural) (rop :: RelOp) (rn :: Natural) where
-    -- @<n OR  >m@: @n==m@ -> NEQ; @n>m@ -> True (?)
-    SimplifyCompareLengthOr RelOpLT  n RelOpGT  m =
-        OrdCond (CmpNat n m)
-            Nothing
-            (Just (CompareLength RelOpNEQ n))
-            (Just Succeed)
-    SimplifyCompareLengthOr RelOpGT  m RelOpLT  n =
-        OrdCond (CmpNat n m)
-            Nothing
-            (Just (CompareLength RelOpNEQ n))
-            (Just Succeed)
-
-    SimplifyCompareLengthOr lop ln rop rn = Nothing
-
 type family SimplifyNand l r where
     -- TODO fill in rest
     SimplifyNand p p = Just (Not p)
 
     -- recurse
     SimplifyNand l r =
-        (OrElseNandL r (Simplify' l)
-            (OrElseNandR l (Simplify' r)
+        (OrElseNandL r (SimplifyStep l)
+            (OrElseNandR l (SimplifyStep r)
                 Nothing))
 
 type family OrElseNandL r mp cont where
@@ -180,10 +156,10 @@ type family SimplifyNot p where
     SimplifyNot Succeed = Just Fail
     SimplifyNot Fail    = Just Succeed
 
-    -- TODO handle relational predicates!
+    SimplifyNot (CompareLength op n) = Just (CompareLength (FlipRelOp op) n)
 
     -- recurse
-    SimplifyNot p = OrElseNot (Simplify' p) Nothing
+    SimplifyNot p = OrElseNot (SimplifyStep p) Nothing
 
 type family OrElseNot mp cont where
     OrElseNot Nothing   cont = cont
