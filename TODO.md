@@ -11,9 +11,11 @@
 * make a little `prettyRefined :: Show a => Refined p a -> String` that reifies
   the predicate nicely and slots the value in!
   * hrmmmmm idk exactly how it'll look. maybe leave till later.
+* write more simplifier tests
 
-## Simplifier
-Really need to write a bunch of tests. See Symparsec for type-spec example.
+## Simplifier: log simplifications in a list
+Not hugely useful, since the simplifier can only handle trivial simplifications
+(most of which should be pretty apparent from a glance), but it'd be very cute!
 
 ## Predicates
 * `All ps`, `And` a list of predicates? My errors work for it. Seems fun.
