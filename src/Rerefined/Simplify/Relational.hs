@@ -15,7 +15,6 @@ type family SimplifyCompareLength (op :: RelOp) (n :: Natural) where
     SimplifyCompareLength RelOpGTE 0 = Just Succeed
     SimplifyCompareLength RelOpGT  0 = Just (CompareLength RelOpEQ 0)
 
-    -- TODO I think that's it for single relational predicates.
     SimplifyCompareLength op n = Nothing
 
 type family SimplifyCompareLengthAnd
