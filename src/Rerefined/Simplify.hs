@@ -52,11 +52,13 @@ type family TrySimplifyLoop p mp where
     -- couldn't simplify
     TrySimplifyLoop p Nothing   = Nothing
 
-type AssertSimplified p = AssertSimplified' p (TrySimplify p)
-
 -- | Assert that a predicate may not be trivially simplified.
 --
 -- Returns the empty constraint on success, else emits a pretty type error.
+--
+-- Useful e.g. if you'd like to make sure a user isn't writing silly predicates.
+type AssertSimplified p = AssertSimplified' p (TrySimplify p)
+
 type family AssertSimplified' p mp' :: Constraint where
     AssertSimplified' p Nothing   = ()
     AssertSimplified' p (Just p') = TypeError
