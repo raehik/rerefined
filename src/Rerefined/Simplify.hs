@@ -8,7 +8,7 @@ transformations whatsoever. The only guarantees are
 * the output has the same or fewer operations
 * the output meaning is identical to the input
 
-See 'Rerefined.Simplify.Core' (internal module) for more details.
+See "Rerefined.Simplify.Core" (internal module) for more details.
 -}
 
 module Rerefined.Simplify
