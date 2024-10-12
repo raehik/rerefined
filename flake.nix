@@ -1,26 +1,23 @@
-# TODO
-# * better devshell name overriding. clumsy because we can't access the
-#   derivation being used (because it's auto-grabbed). really just wanna change
-#   `ghc-shell-for` to `ghcXY` and keep the `-${pname}-${version}`!
-# * honestly maybe I move away from haskell-flake...? it's weird
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     haskell-flake.url = "github:srid/haskell-flake";
   };
+
   outputs = inputs:
   let
     defDevShell = compiler: {
       mkShellArgs.name = "${compiler}";
       hoogle = false;
       tools = _: {
-        hlint = null;
         haskell-language-server = null;
+        hlint = null;
         ghcid = null;
       };
     };
   in
+
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       systems = inputs.nixpkgs.lib.systems.flakeExposed;
       imports = [ inputs.haskell-flake.flakeModule ];
