@@ -1,3 +1,6 @@
+## 0.8.0 (2024-10-12)
+* tweak `Simplify` exports (should stay fairly stable now)
+
 ## 0.7.0 (2024-10-11)
 * add predicate simplifier at `Rerefined.Simplify`
   * old "normalizer" stuff removed
