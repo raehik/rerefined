@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.36.1.
+-- This file has been generated from package.yaml by hpack version 0.38.1.
 --
 -- see: https://github.com/sol/hpack
 
@@ -76,7 +76,7 @@ library
       QuickCheck >=2.14 && <2.16
     , base >=4.18 && <5
     , mono-traversable >=1.0.17.0 && <1.1
-    , template-haskell >=2.19.0.0 && <2.23
+    , template-haskell >=2.19.0.0 && <2.24
     , text >=2.0 && <2.2
     , text-builder-linear >=0.1.2 && <0.2
     , type-level-show >=0.2.1 && <0.4
@@ -106,7 +106,7 @@ test-suite spec
     , base >=4.18 && <5
     , mono-traversable >=1.0.17.0 && <1.1
     , rerefined
-    , template-haskell >=2.19.0.0 && <2.23
+    , template-haskell >=2.19.0.0 && <2.24
     , text >=2.0 && <2.2
     , text-builder-linear >=0.1.2 && <0.2
     , type-level-show >=0.2.1 && <0.4

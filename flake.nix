@@ -22,14 +22,15 @@
       systems = inputs.nixpkgs.lib.systems.flakeExposed;
       imports = [ inputs.haskell-flake.flakeModule ];
       perSystem = { self', pkgs, config, ... }: {
-        packages.default  = self'.packages.ghc98-rerefined;
-        devShells.default = self'.devShells.ghc98;
+        packages.default  = self'.packages.ghc912-rerefined;
+        devShells.default = self'.devShells.ghc912;
+        haskellProjects.ghc912 = {
+          basePackages = pkgs.haskell.packages.ghc912;
+          devShell = defDevShell "ghc912";
+        };
         haskellProjects.ghc910 = {
           basePackages = pkgs.haskell.packages.ghc910;
           devShell = defDevShell "ghc910";
-
-          # https://github.com/phadej/defun/pull/5
-          settings.defun-core.jailbreak = true;
         };
         haskellProjects.ghc98 = {
           basePackages = pkgs.haskell.packages.ghc98;
