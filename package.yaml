@@ -9,8 +9,7 @@ category: Types, Data
 license: MIT
 license-file: LICENSE
 tested-with:
-- GHC==9.8
-- GHC==9.6
+- GHC==9.14
 
 github: raehik/rerefined
 maintainer: Ben Orchard <thefirstmuffinman@gmail.com>
